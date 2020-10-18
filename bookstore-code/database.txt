@@ -1,0 +1,4 @@
+Database:	ducvuphp03_bookstore
+Host:	localhost
+Username:	ducvuphp03_bookstore
+Password:	3y4lg35p
