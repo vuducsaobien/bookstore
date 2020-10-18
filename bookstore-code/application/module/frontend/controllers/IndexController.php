@@ -23,7 +23,6 @@ class IndexController extends Controller{
 
 		$this->_view->booksSpecial 		= $this->_model->listItems($this->_arrParam, ['task' => 'books-special']);
 		$this->_view->slides 		= $this->_model->listItems($this->_arrParam, ['task' => 'slides-active']);
-		$this->_view->categoriesSpecial = $this->_model->listItems($this->_arrParam, ['task' => 'categories-special']);
 		$this->_view->booksCategories = $this->_model->listItems($this->_arrParam, ['task' => 'books-category']);
 
 		$this->_view->setTitle($title);

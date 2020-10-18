@@ -4,6 +4,10 @@ $module         = $this->arrParam['module'];
 $controller     = $this->arrParam['controller'];
 $action         = $this->arrParam['action'];
 
+// echo '<pre>$this->categoriesSpecial ';
+// print_r($this->categoriesSpecial);
+// echo '</pre>';
+
 if(!empty($this->booksSpecial)){
 	foreach($this->booksSpecial as $book){
 		$booksSpecial .= HTML_Frontend::showProductBox($book, true, false, false, null, null, 'all');

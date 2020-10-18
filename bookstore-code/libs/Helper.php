@@ -75,7 +75,6 @@ class Helper
 		$dataID = ($dataID == null) ? '' : 'data-id="' . $dataID . '"';
 		$strPlace = ($placeHolder == null) ? '' : 'placeholder="' . $placeHolder . '"';
 
-
 		$xhtml 		= "<input type='$type' name='$name' id='$id' $strClass $strValue $strSize $strStyle $dataID $strPlace>";
 		return $xhtml;
 	}

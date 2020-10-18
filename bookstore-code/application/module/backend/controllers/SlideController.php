@@ -65,9 +65,4 @@ class SlideController extends BackendController
 		$this->_view->render("{$this->_controllerName}/form");
 	}
 
-	public function ajaxOrderingAction()
-	{
-		$result = $this->_model->ajaxOrdering($this->_arrParam);
-		echo json_encode($result);
-	}
 }

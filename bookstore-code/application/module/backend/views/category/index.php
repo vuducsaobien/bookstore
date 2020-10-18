@@ -22,18 +22,19 @@
     if(!empty($this->Items)){
         foreach($this->Items as $item){
             $id 		    = $item['id'];
+            $totalBooks        = $item['total_books'];
             $checkbox       = HTML::showItemCheckbox($id);
             $linkEdit       = URL::createLink($module, $controller, 'form', ['id' => $id]);
-
             $resultID       = Helper::highLight($item['id'], $searchField, $searchValue, 'id');
             $resultName     = Helper::highLight($item['name'], $searchField, $searchValue, 'name');
+            
             $picture        = HTML_Frontend::getSrcPictureAdmin($controller, $item['picture']);
             $status	 	    = HTML::showItemState($module, $controller, $id, 'status', $item['status']);
             $special        = HTML::showItemState($module, $controller, $id, 'special', $item['special']);
-            $totalBooks        = $item['total_books'];
             $inputOrdering  = Helper::cmsInput('number', "chkOrdering['$id']", $id, 'chkOrdering form-control form-control-sm m-auto text-center', $item['ordering'], null, 'width: 65px', null, $id);
 
             $modified       = HTML::showItemHistory($item['modified_by'], $item['modified']);
+
             $btnAction      = HTML::showActionButton($module, $controller, $id);
             $xhtml         .= '
             <tr>

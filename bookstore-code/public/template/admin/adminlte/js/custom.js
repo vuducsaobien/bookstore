@@ -3,18 +3,39 @@ $(document).ready(function () {
 	var moduleName = searchParams.get('module');
     var controllerName = searchParams.get('controller');
 
-	// Prevent delete button
+    // Prevent delete button
+    $('.btn-delete-item').click(function () {
+
 	$('.btn-delete-item').click(function (e) {
-		var countCheckedInput = $('[name="checkbox[]"]:checked').length;
+        var countCheckedInput = $('[name="checkbox[]"]:checked').length;
+        
 		if(countCheckedInput<0){
 			alert('Vui Lòng Chọn Phần Tử Muốn Xóa');
 		}
         e.preventDefault();
         
-	    if (confirm("Bạn có muốn xóa phần tử này không ??")) {
+        if (confirm
+            ("Bạn có muốn xóa phần tử này không ??")
+        ) {
 		   link = $(this).attr('href');
 		   window.location.assign(link);
-	    }
+        }
+
+
+
+        // Swal.fire(confirmObj('Bạn chắc chắn muốn xóa dòng dữ liệu này?', 'error', 'Xóa')).then(
+        // Swal.fire(confirm('Bạn chắc chắn muốn xóa dòng dữ liệu này?', 'error', 'Xóa')).then(
+
+            // (result) => {
+            //     if (result.value) {
+            //         let moduleName = getUrlParam('module');
+            //         let controllerName = getUrlParam('controller');
+        //             // window.location.href = `index.php?module=${moduleName}&controller=${controllerName}&action=delete&id=${id}`;
+        //         }
+        //     }
+        // );
+
+        
     });
 
 	// AJAX FILTER GROUP ACP SELECT BOX CHECK
@@ -83,30 +104,24 @@ $(document).ready(function () {
         var chkOrdering = $(this);
         let ordering = $(this).val();
         let id = $(this).data('id');
-        let url = `index.php?module=${moduleName}&controller=${controllerName}&action=ajaxOrdering&id=${id}&ordering=${ordering}`;
-        let link = `index.php?module=${moduleName}&controller=${controllerName}&action=ajaxChangeState&id=${id}&ordering=${ordering}`;
-        $.get(url, function (data) {
-            console.log(data);
 
-            // if (data.state > 0) {
+        let url = `index.php?module=${moduleName}&controller=${controllerName}&action=changeState&id=${id}&ordering=${ordering}`;
+
+        $.get(url, function (data) {
+            if (data.state > 0) {
                 $('.modified-' + data.id).html(data.modified);
-                chkOrdering.attr('href', link);
+                chkOrdering.attr('href', data.link);
                 showNotify(chkOrdering, 'success-update');
-            // }
-        });
-        'json'
+            }
+        },'json');
+
     });
 
-    $('.my-btn-state').click(function () {
-        // e.preventDefault()
+    $('.my-btn-state').click(function (e) {
         var myBtnState = $(this);
         var url = $(this).attr('href');
-        console.log(myBtnState);
-
-        /*
-        $.get(url, 
-            function (data) {
-                // console.log(data);
+        
+        $.get(url, function (data) {
                 if (data.state == 1 || data.state == 'active') {
                     myBtnState.removeClass('btn-danger');
                     myBtnState.addClass('btn-success');
@@ -120,15 +135,10 @@ $(document).ready(function () {
                 $('.modified-' + data.id).html(data.modified);
                 myBtnState.attr('href', data.link);
                 showNotify(myBtnState, 'success-update');
-            },
-            'json'
-        );
-        // e.preventDefault()
+        },'json');
 
-        */
-
+        e.preventDefault()
     });
-
 
     // Change Password Button
     $('.btn-generate-password').click(function(e){
@@ -202,6 +212,11 @@ $(document).ready(function () {
 
 });
 
+function getUrlParam(key) {
+    let searchParams = new URLSearchParams(window.location.search);
+    return searchParams.get(key);
+}
+
 function submitForm(url) {
 	$('#admin-form').attr('action', url);
 	$('#admin-form').submit();
@@ -237,7 +252,6 @@ function createLink(exceptParams) {
     }
     return link;
 }
-
 
 const Toast = Swal.mixin({
     toast: true,

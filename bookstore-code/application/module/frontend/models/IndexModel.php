@@ -73,22 +73,6 @@ class IndexModel extends Model
 
 	}
 
-	public function listCategory($arrParam, $options = null){
-		if($options == null) {
-			$tableAs = '`c`';
-
-			$query[] = "SELECT `c`.`id` AS `category_id`, `c`.`name`";
-			$query[] = "FROM `".TBL_CATEGORY."` AS `c`";
-			$query[] = "WHERE $tableAs.`status` = 'active' AND `c`.`special` = 1";
-			$query[] = "ORDER BY `c`.`ordering` ASC ";
-			$query[] = "LIMIT 0, 3";
-
-			$query		= implode(" ", $query);
-			$result		= $this->fetchAll($query);					
-			return $result;
-		}
-	}
-
 	public function listItems($arrParam, $options = null)
 	{
 		if($options['task'] == 'books-special'){
@@ -102,21 +86,13 @@ class IndexModel extends Model
 			$query[] = "LIMIT 0, 6";
 		}
 
-		if($options['task'] == 'categories-special' ){
-			$tableAs = '`c`';
-
-			$query[] = "SELECT `c`.`id` AS `category_id`, `c`.`name`";
-			$query[] = "FROM `".TBL_CATEGORY."` AS `c`";
-			$query[] = "WHERE $tableAs.`status` = 'active' AND `c`.`special` = 1";
-			$query[] = "ORDER BY `c`.`ordering` ASC ";
-			$query[] = "LIMIT 0, 4";
-
-		}
-
 		if($options['task'] == 'books-category' ){
-			$listCategorySpecial    = $this->listCategory(null);
+
+			$query = "SELECT `id` AS `category_id`, `name` FROM `".TBL_CATEGORY."` WHERE `status` = 'active' AND `special` = '1'
+			ORDER BY `ordering` ASC LIMIT 0, 3";
+			$listCategorySpecial		= $this->fetchAll($query);
+
 			$arrCategorySpecial   = [];
-			
             foreach($listCategorySpecial as $item)
             {
                 $arrCategorySpecial[] = ['category_id' => $item['category_id'], 'category_name' => $item['name']];
@@ -172,12 +148,7 @@ class IndexModel extends Model
 
 			// Update database New Password
 			$query = "UPDATE `$this->table` SET `password` = '$newPassword', `modified_by` = 'Reset Password From Email Login', `modified` = '{$this->timeNow}' WHERE `email` = '$email'";
-
-			// die;
-			// echo '<h3>Die is Called</h3>';
-
 			$this->query($query);
-
 
 			// Get info Email Exist
 			$query		= "SELECT `username`, `email` FROM `user` WHERE `email` = '$email' ";

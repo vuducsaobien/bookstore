@@ -12,7 +12,7 @@
 	define ('PATH_BLOCK'		, PATH_APPLICATION . 'block' . DS);			// Định nghĩa đường dẫn đến thư mục block							
 	define ('PATH_TEMPLATE'		, PATH_PUBLIC . 'template' . DS);			// Định nghĩa đường dẫn đến thư mục template							
 	
-	define	('URL_ROOT'			, DS . 'Laptop-PC' . DS . 'php03' . DS . 'project' . DS . 'bookstore' . DS);
+	define	('URL_ROOT'			, DS . 'bookstore' .DS. 'bookstore-code' . DS);
 	// define	('URL_ROOT'			, DS);
 
 	define	('URL_APPLICATION'	, URL_ROOT . 'application' . DS);

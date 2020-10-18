@@ -17,7 +17,7 @@ class BackendController extends Controller{
 	public function changeStateAction()
     {
 		$result = $this->_model->ajaxChangeState($this->_arrParam);
-		// echo json_encode($result);
+		echo json_encode($result);
     }
 
 	// ACTION: MULTI-ACTIVE

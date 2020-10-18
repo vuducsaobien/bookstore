@@ -39,7 +39,6 @@
 
             $created      = HTML::showItemHistory($item['created_by'], $item['created']);
             $modified     = HTML::showItemHistory($item['modified_by'], $item['modified']);
-
             $btnAction      = HTML::showActionButton($module, $controller, $id);
 
             $xhtml         .= '

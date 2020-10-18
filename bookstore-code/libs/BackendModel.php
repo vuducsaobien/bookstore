@@ -338,6 +338,7 @@ class BackendModel extends Model
 
 	public function deleteItems($arrParam, $options = null)
 	{
+		die('<h3>Die is Called</h3>');
 		if ($options == null) {
 			$ids = [];
 			if (isset($arrParam['id'])) $ids = [$arrParam['id']];
@@ -416,6 +417,7 @@ class BackendModel extends Model
 				} elseif ( isset($arrParam['ordering']) ) {
 					$stateName 	= 'ordering';
 					$state		= $arrParam['ordering'];
+					if($state <= '0') $state='1';
 			}
 
 			$query  = "UPDATE `$this->table` SET `$stateName` = '$state', `modified_by` = '{$this->username}', `modified` = '{$this->timeNow}' WHERE `id` = '$id'";

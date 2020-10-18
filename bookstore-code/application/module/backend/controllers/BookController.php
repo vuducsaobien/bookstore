@@ -73,12 +73,6 @@ class BookController extends BackendController
         echo json_encode($result);
 	}
 	
-	public function ajaxOrderingAction()
-    {
-		$result = $this->_model->ajaxOrdering($this->_arrParam);
-        echo json_encode($result);
-	}
-
 
 
 }
