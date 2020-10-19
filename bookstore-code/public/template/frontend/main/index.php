@@ -14,11 +14,12 @@
 
 <body>
 <?php     
-$linkDetail = URL::createLink('frontend', 'book', 'index', ['book_id' => $bookID, 'category_id' => $cateID], "$cateNameURL/$bookNameURL-$cateID-$bookID.html");?>
+    $linkDetail = URL::createLink('frontend', 'book', 'index', ['book_id' => $bookID, 'category_id' => $cateID], "$cateNameURL/$bookNameURL-$cateID-$bookID.html");?>
 
     <script>
         var rootURL = '<?php echo URL_ROOT ?>';
     </script>
+
     <div class="loader_skeleton">
         <div class="typography_section">
             <div class="typography-box">
@@ -35,10 +36,7 @@ $linkDetail = URL::createLink('frontend', 'book', 'index', ['book_id' => $bookID
 
     <!-- LOAD CONTENT -->
         <!-- Tab product --> 
-            <?php
-                require_once PATH_MODULE. $this->_moduleName . DS . 'views' . DS . $this->_fileView . '.php'
-            ;?>     
-
+            <?php require_once PATH_MODULE. $this->_moduleName . DS . 'views' . DS . $this->_fileView . '.php' ;?>     
         <!-- Tab product end -->
     <!-- END LOAD CONTENT -->
 
@@ -51,7 +49,11 @@ $linkDetail = URL::createLink('frontend', 'book', 'index', ['book_id' => $bookID
     <!-- footer end -->
 
     <!-- tap to top -->
-        <?php require_once 'html/tap_to_top.php' ;?>
+        <div class="tap-top top-cls">
+            <div>
+                <i class="fa fa-angle-double-up"></i>
+            </div>
+        </div>
     <!-- tap to top end -->
 
     <!-- script -->

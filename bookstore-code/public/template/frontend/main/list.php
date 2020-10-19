@@ -35,7 +35,7 @@
         <!-- Tab product end -->
     <!-- END LOAD CONTENT -->
 
-    <?php require_once 'html/phone.php' ;?>
+    <?php// require_once 'html/phone.php' ;?>
     <?php require_once 'html/popup.php' ;?>
 
     <!-- footer -->

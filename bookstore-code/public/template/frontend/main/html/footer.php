@@ -2,24 +2,26 @@
     $module         = $this->arrParam['module'];
     $controller     = $this->arrParam['controller'];
     $action         = $this->arrParam['action'];
-    require_once PATH_LIBRARY . 'Model.php';
-    $model      = new Model();
-    $userObj         = Session::get('user');
-    $userInfo        = $userObj['info'];
 
+    require_once PATH_LIBRARY . 'Model.php';
+    $model          = new Model();
+    $userObj        = Session::get('user');
+    $userInfo       = $userObj['info'];
     
-    $tableAs        = '`c`';
-    $queryFooter[]  = "SELECT `c`.`id` AS `category_id`, `c`.`name`";
+    $queryFooter[]  = "SELECT `id` AS `category_id`, `name`";
     $queryFooter[]  = "FROM `".TBL_CATEGORY."` AS `c`";
-    $queryFooter[]  = "WHERE $tableAs.`status` = 'active' AND `c`.`special` = 1";
-    $queryFooter[]  = "ORDER BY `c`.`ordering` ASC ";
+    $queryFooter[]  = "WHERE `status` = 'active' AND `special` = 1";
+    $queryFooter[]  = "ORDER BY `ordering` ASC ";
     $queryFooter[]  = "LIMIT 0, 4";
 
     $queryFooter    = implode(" ", $queryFooter);
-    $result		= $model->fetchAll($queryFooter);
+    $result		    = $model->fetchAll($queryFooter);
+
     foreach($result as $value){
-        $linkCategoryFooter = 'index.php?module='.$module.'&controller=book&action=list&category_id='.$value['category_id'].'';
-        $special_cats .= '<li><a href="'.$linkCategoryFooter.'">'.$value['name'].'</a></li>';
+        $cateID             = $value['category_id'];
+        $cateNameURL        = URL::filterURL($value['name']);
+        $linkCategoryFooter = URL::createLink($module, 'book', 'list', ['category_id' => $value['category_id']], "$cateNameURL-$cateID.html");
+        $special_cats       .= '<li><a href="'.$linkCategoryFooter.'">'.$value['name'].'</a></li>';
     }
 ?>
 
@@ -41,7 +43,7 @@
                     </div>
                     <div class="footer-contant">
                         <div class="footer-logo">
-                            <h2 style="color: #5fcbc4">BookStore Đức</h2>
+                            <h2 style="color: #5fcbc4">BookStore</h2>
                         </div>
                         <p>Tự hào là website bán sách trực tuyến lớn nhất Việt Nam, cung cấp đầy đủ các thể loại
                             sách, đặc biệt với những đầu sách độc quyền trong nước và quốc tế</p>

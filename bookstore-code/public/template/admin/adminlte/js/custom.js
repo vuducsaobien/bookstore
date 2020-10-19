@@ -2,7 +2,7 @@ $(document).ready(function () {
 	var searchParams = new URLSearchParams(window.location.search);
 	var moduleName = searchParams.get('module');
     var controllerName = searchParams.get('controller');
-/*
+// /*
     // Prevent delete button
     $('.btn-delete-item').click(function () {
 
@@ -44,7 +44,7 @@ $(document).ready(function () {
         
     });
 
-    */
+    // */
 
 	// AJAX FILTER GROUP ACP SELECT BOX CHECK
 	$('#filter-bar select[name=filter_group_acp]').change(function () {
