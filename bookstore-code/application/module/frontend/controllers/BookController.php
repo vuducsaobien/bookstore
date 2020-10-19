@@ -5,7 +5,7 @@ class BookController extends Controller
 	{
 		parent::__construct($arrParamms);
 		$this->_templateObj->setFolderTemplate('frontend/main/');
-		$this->_templateObj->setFileTemplate('list.php');
+		$this->_templateObj->setFileTemplate('index.php');
 		$this->_templateObj->setFileConfig('template.ini');
 		$this->_templateObj->load();
 
@@ -71,9 +71,10 @@ class BookController extends Controller
 		$title = $this->_model->infoItems($this->_arrParam, ['task' =>'get-book-name'])['name'];
 
 		$this->_view->bookInfo  = $this->_model->infoItems($this->_arrParam, ['task' =>'book-info']);
-		$this->_view->bookRelate  = $this->_model->listItems($this->_arrParam, ['task' =>'books-relate']);
-		$this->_view->booksSpecial 		= $this->_model->listItems($this->_arrParam, ['task' => 'books-special']);
-		$this->_view->booksNews 		= $this->_model->listItems($this->_arrParam, ['task' => 'books-news']);
+		
+		$this->_view->book_Relate  		= $this->_model->list_Books_Relate($this->_arrParam);
+		$this->_view->books_News 		= $this->_model->list_Books_News($this->_arrParam, ['task' => 'news-books-different-relate']);
+		$this->_view->books_Special 		= $this->_model->listItems($this->_arrParam, ['task' => 'special-books-different-relate-news']);
 
 		$this->_view->setTitle($title);
 		$this->_view->render("{$this->_controllerName}/index");

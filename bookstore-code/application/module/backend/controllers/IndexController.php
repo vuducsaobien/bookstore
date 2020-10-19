@@ -25,9 +25,6 @@ class IndexController extends Controller{
 	{
 		$arrForm = $this->_arrParam['form'];
 		$userInfo	= Session::get('user');
-		// echo '<pre>$userInfo ';
-		// print_r($userInfo);
-		// echo '</pre>';
 		if( $userInfo['login'] == true && $userInfo['time'] + TIME_LOGIN >= time() ){
 			URL::redirect($this->_moduleName, 'dashboard', 'index');
 		}

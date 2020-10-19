@@ -5,19 +5,28 @@ $action     = $this->arrParam['action'];
 $imageURL   = $this->_dirImg;
 
 // Books RELATE
-if(!empty($this->bookRelate)){
-	foreach($this->bookRelate as $item){
-        $cateID         = $item['category_id'];
-        $linkCategory   = URL::createLink($module, 'book', 'list', ['category_id' => $cateID]);
-
+if(!empty($this->book_Relate)){
+	foreach($this->book_Relate as $item){
         $divStart       = '<div class="col-xl-2 col-md-4 col-sm-6">';
         $divEnd         = '</div>';
         $booksRelate   .= HTML_Frontend::showProductBox($item, true, false, true, $divStart, $divEnd, 'all');
 	}
 }
 
-$booksSpecial = HTML_Frontend::createSlide($this->booksSpecial, 3);
-$booksNews = HTML_Frontend::createSlide($this->booksNews, 3);
+// echo '<pre>$this->book_Relate ';
+// print_r($this->book_Relate);
+// echo '</pre>';
+
+// echo '<pre>$this->books_News ';
+// print_r($this->books_News);
+// echo '</pre>';
+
+// echo '<pre>$this->books_Special ';
+// print_r($this->books_Special);
+// echo '</pre>';
+
+$booksNews = HTML_Frontend::createSlide($this->books_News, 3);
+$booksSpecial = HTML_Frontend::createSlide($this->books_Special, 3);
 
 ?>
 
@@ -41,7 +50,7 @@ $booksNews = HTML_Frontend::createSlide($this->booksNews, 3);
                 <?php require_once 'elements/book_info.php'; ?>
 
                 <div class="col-sm-3 collection-filter">
-                    <?php require_once 'elements/service_layout.php'; ?>
+                    <?php require_once PATH_BLOCK . 'detail-service.php'; ?>
 
                     <!-- Sách nổi bật  -->
                     <div class="theme-card">
@@ -58,6 +67,7 @@ $booksNews = HTML_Frontend::createSlide($this->booksNews, 3);
                             <?php echo $booksNews;?>
                         </div>
                     </div>
+                    
                 </div>
                 
             </div>
@@ -71,7 +81,6 @@ $booksNews = HTML_Frontend::createSlide($this->booksNews, 3);
                                 <h2>Sản phẩm liên quan</h2>
                             </div>
                         </div>
-
                         <div class="row search-product">
                             <?php echo $booksRelate ;?>
                         </div>

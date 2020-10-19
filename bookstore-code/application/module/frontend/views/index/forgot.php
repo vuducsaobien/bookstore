@@ -1,18 +1,17 @@
 <?php
-$module     = $this->arrParam['module'];
-$controller = $this->arrParam['controller'];
-$action     = $this->arrParam['action'];
-$dataForm   = $this->arrParam['form']; 
+    $module     = $this->arrParam['module'];
+    $controller = $this->arrParam['controller'];
+    $action     = $this->arrParam['action'];
+    $dataForm   = $this->arrParam['form']; 
 
-$email          = $this->info['email'];
-$emailUsername  = $this->info['username'];
-$modelPassword  = $this->info['new-password'];
+    $email          = $this->info['email'];
+    $emailUsername  = $this->info['username'];
+    $modelPassword  = $this->info['new-password'];
 
-$newPassword    = Helper::randomString(8);
+    $newPassword    = Helper::randomString(8);
 
-// Input
+    // Input
     $inputEmail    = Helper::cmsInput('text', 'form[email]', 'form[email]', 'form-control', $dataForm['email'], null, null, null, null, 'vuducsaobien95@gmail.com');
-
     $inputToken    = Helper::cmsInput('hidden', 'form[token]', 'form[submit]', null,time()); 
     $btnSubmit   = Helper::cmsButton('button', 'Lấy Mật Khẩu', 'form[submit]', 'submit', 'btn btn-info', null, 'Đăng nhập');
 
@@ -30,46 +29,46 @@ $newPassword    = Helper::randomString(8);
     $btnCancel      = Helper::cmsButton('home', 'Cancel', null, 'button', 'btn btn-info btn-danger ml-3', $linkCancel);
 
     $rows = $rowEmail ;
-$buttons = $btnSubmit . $btnCancel ;
+    $buttons = $btnSubmit . $btnCancel ;
 
 
-/* ---- Send Mail Reset Password----- */
-use PHPMailer\PHPMailer\PHPMailer;
+    /* ---- Send Mail Reset Password----- */
+    use PHPMailer\PHPMailer\PHPMailer;
 
-if( $email != null && $emailUsername != null ){
-    require 'vendor/autoload.php';
+    if( $email != null && $emailUsername != null ){
+        require 'vendor/autoload.php';
 
-    $linkLogin = 'http://localhost/Laptop-PC/php03/project/bookstore/index.php?module=backend&controller=index&action=login';
+        $linkLogin = 'http://localhost/Laptop-PC/php03/project/bookstore/index.php?module=backend&controller=index&action=login';
 
-    $content = "$emailUsername, your password at BookStore has been reset.
-    You may now <a href=".$linkLogin.">log in</a> using your new password : <strong>$modelPassword</strong>";
+        $content = "$emailUsername, your password at BookStore has been reset.
+        You may now <a href=".$linkLogin.">log in</a> using your new password : <strong>$modelPassword</strong>";
 
-    $mail = new PHPMailer(true);
+        $mail = new PHPMailer(true);
 
-    $mail->isSMTP();
-    $mail->Host       = 'smtp.gmail.com';
-    $mail->SMTPAuth   = true;                                
+        $mail->isSMTP();
+        $mail->Host       = 'smtp.gmail.com';
+        $mail->SMTPAuth   = true;                                
 
-    $mail->Username   = 'vuducsaobien95@gmail.com';                    
-    $mail->Password   = 'eamebfnacckryzyk';                    
+        $mail->Username   = 'vuducsaobien95@gmail.com';                    
+        $mail->Password   = 'eamebfnacckryzyk';                    
 
-    $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;         
-    $mail->Port       = 587;                                  
+        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;         
+        $mail->Port       = 587;                                  
 
-    //Recipients
-    $mail->setFrom('example@gmail.com', 'BookStore Mailer');
-    $mail->addAddress($email, $emailUsername);   
+        //Recipients
+        $mail->setFrom('example@gmail.com', 'BookStore Mailer');
+        $mail->addAddress($email, $emailUsername);   
 
-    // Content
-    $mail->isHTML(true); 
-    $mail->Subject = 'BookStore - Password reset';
-    $mail->Body    = $content;
-    
-    $mail->send();
-    $messageSuccess = '<div>
-<h6 class="my-2 btn-success"> Đã gửi Mật Khẩu mới qua '.$email.' thành công !</h6>
-</div>';
-}
+        // Content
+        $mail->isHTML(true); 
+        $mail->Subject = 'BookStore - Password reset';
+        $mail->Body    = $content;
+        
+        $mail->send();
+        $messageSuccess = '<div>
+    <h6 class="my-2 btn-success"> Đã gửi Mật Khẩu mới qua '.$email.' thành công !</h6>
+    </div>';
+    }
 
 
 ?>
@@ -85,6 +84,7 @@ if( $email != null && $emailUsername != null ){
         </div>
     </div>
 </div>
+
 <section class="login-page section-b-space">
     <div class="container">
         <div class="row">
@@ -113,6 +113,7 @@ if( $email != null && $emailUsername != null ){
                     <a href="<?php echo $linkRegister ;?>" class="btn btn-info">Đăng ký</a>
                 </div>
             </div>
+            
         </div>
     </div>
 </section>

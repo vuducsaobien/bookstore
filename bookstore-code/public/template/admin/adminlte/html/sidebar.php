@@ -37,12 +37,10 @@ $arrUser  = ['parent' =>['name' => 'User', 'icon' => 'user','link' => '#'],
             ];
 $user       = HTML::createSidebar($controller,$action,$arrUser);
 
-
 // Slide
 $arrSlide = ['parent' => ['name' => 'Slide', 'icon' => 'images','link' => $linkSlide]
                  ];
 $slide  = HTML::createSidebar($controller,$action,$arrSlide);
-
 
 //dashboard
 $arrDashboard = ['parent' => ['name' => 'Dashboard', 'icon' => 'tachometer-alt','link' => $linkDashboard]
@@ -96,6 +94,8 @@ $arrLogout = ['parent' => ['name' => 'Logout', 'icon' => 'sign-out-alt','link' =
                 ];
 $logout    = HTML::createSidebar($controller,$action,$arrLogout);
 
+$sidebarMenu = $dashboard . $group . $user . $category . $book . $cart . $slide . $changePassword . $viewSite . $logout ;
+
 ?>
 <aside class="main-sidebar sidebar-dark-info elevation-4">
     <!-- Brand Logo -->
@@ -119,7 +119,7 @@ $logout    = HTML::createSidebar($controller,$action,$arrLogout);
         <!-- Sidebar Menu -->
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                <?php echo $dashboard . $group . $user . $category . $book . $cart . $slide . $changePassword . $viewSite . $logout; ?>
+                <?php echo $sidebarMenu ;?>
             </ul>
         </nav>
         <!-- /.sidebar-menu -->

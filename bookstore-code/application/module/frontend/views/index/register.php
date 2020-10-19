@@ -55,7 +55,6 @@ $linkAction    = URL::createLink('frontend', 'index', 'register');
                         <?php echo $btnRegister . $inputToken ;?>
                     </form>
                 </div>
-
                 
             </div>
         </div>

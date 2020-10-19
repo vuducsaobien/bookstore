@@ -338,7 +338,6 @@ class BackendModel extends Model
 
 	public function deleteItems($arrParam, $options = null)
 	{
-		die('<h3>Die is Called</h3>');
 		if ($options == null) {
 			$ids = [];
 			if (isset($arrParam['id'])) $ids = [$arrParam['id']];

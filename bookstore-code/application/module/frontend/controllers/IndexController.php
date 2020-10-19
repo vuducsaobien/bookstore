@@ -4,7 +4,7 @@ class IndexController extends Controller{
 	public function __construct($arrParams){
 		parent::__construct($arrParams);
 		$this->_templateObj->setFolderTemplate('frontend/main/');
-		$this->_templateObj->setFileTemplate('notice.php');
+		$this->_templateObj->setFileTemplate('index.php');
 		$this->_templateObj->setFileConfig('template.ini');
 		$this->_templateObj->load();
 
@@ -15,11 +15,6 @@ class IndexController extends Controller{
 
 	public function indexAction(){
 		$title = 'Trang chủ | Book Store';
-
-		$this->_templateObj->setFolderTemplate('frontend/main/');
-		$this->_templateObj->setFileTemplate('index.php');
-		$this->_templateObj->setFileConfig('template.ini');
-		$this->_templateObj->load();
 
 		$this->_view->booksSpecial 		= $this->_model->listItems($this->_arrParam, ['task' => 'books-special']);
 		$this->_view->slides 		= $this->_model->listItems($this->_arrParam, ['task' => 'slides-active']);

@@ -31,6 +31,10 @@
                 $bookQuantity   = $arrQuantity[$key];
                 $prices         = $arrPrice[$key];
 
+                echo '<pre>$bookName ';
+                print_r($bookName);
+                echo '</pre>';
+
                 $picture        = $arrPicture[$key];
                 $bookPicture    = '<img src="'.URL_UPLOAD . TBL_BOOK . DS . '98x150-' . $picture.'">';
                 $picturePath    = PATH_UPLOAD . TBL_BOOK . DS . '98x150-' . $picture;

@@ -14,7 +14,7 @@ class BookController extends BackendController
 		
 		// Pagination
 		$totalItems				  	= $this->_model->countItems($this->_arrParam);
-		$configPagination = ['totalItemsPerPage' => ITEM_PER_PAGE, 'pageRange' => PAGE_RANGE];
+		$configPagination = ['totalItemsPerPage' => 50, 'pageRange' => PAGE_RANGE];
 		$this->setPagination($configPagination);
 		$this->_view->pagination  	= new Pagination($totalItems, $this->_pagination);
 

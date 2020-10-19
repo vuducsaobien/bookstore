@@ -1,8 +1,6 @@
 <?php
 $linkProfile = URL::createLink($this->arrParam['module'], 'index', 'profile');
 $linkLogout = URL::createLink($this->arrParam['module'], 'index', 'logout');
-// $linkProfile = URL::createLink($this->arrParam['module'], $this->arrParam['controller'], 'profile');
-// $linkLogout  = URL::createLink($this->arrParam['module'], $this->arrParam['controller'], 'logout');
 
 $userInfo	 = Session::get('user')['info'];
 $userName    = $userInfo['username'];

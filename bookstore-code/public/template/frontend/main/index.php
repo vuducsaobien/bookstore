@@ -13,9 +13,6 @@
 </head>
 
 <body>
-<?php     
-    $linkDetail = URL::createLink('frontend', 'book', 'index', ['book_id' => $bookID, 'category_id' => $cateID], "$cateNameURL/$bookNameURL-$cateID-$bookID.html");?>
-
     <script>
         var rootURL = '<?php echo URL_ROOT ?>';
     </script>
@@ -39,10 +36,6 @@
             <?php require_once PATH_MODULE. $this->_moduleName . DS . 'views' . DS . $this->_fileView . '.php' ;?>     
         <!-- Tab product end -->
     <!-- END LOAD CONTENT -->
-
-    <!-- Quick-view modal popup start-->
-        <?php require_once 'html/popup.php' ;?>
-    <!-- Quick-view modal popup end-->
 
     <!-- footer -->
         <?php require_once 'html/footer.php' ;?>
