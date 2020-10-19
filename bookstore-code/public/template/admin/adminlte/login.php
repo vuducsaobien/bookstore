@@ -6,6 +6,8 @@
     <?php echo $this->_metaName; ?>
     <title><?php echo $this->_title; ?></title>
     <?php echo $this->_cssFiles; ?>
+    <?= $this->_jsFiles; ?>
+
 </head>
 
 <body class="login-page">
@@ -13,7 +15,6 @@
         require_once PATH_MODULE . $this->_moduleName . DS . 'views' . DS . $this->_fileView . '.php';
     ?>
     
-    <?= $this->_jsFiles; ?>
 </body>
 
 

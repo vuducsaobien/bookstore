@@ -2,24 +2,30 @@ $(document).ready(function () {
 	var searchParams = new URLSearchParams(window.location.search);
 	var moduleName = searchParams.get('module');
     var controllerName = searchParams.get('controller');
-
+/*
     // Prevent delete button
     $('.btn-delete-item').click(function () {
 
-	$('.btn-delete-item').click(function (e) {
-        var countCheckedInput = $('[name="checkbox[]"]:checked').length;
+	// $('.btn-delete-item').click(function (e) {
+        // var countCheckedInput = $('[name="checkbox[]"]:checked').length;
         
-		if(countCheckedInput<0){
-			alert('Vui Lòng Chọn Phần Tử Muốn Xóa');
-		}
-        e.preventDefault();
+		// if(countCheckedInput<0){
+		// 	alert('Vui Lòng Chọn Phần Tử Muốn Xóa');
+		// }
+        // e.preventDefault();
         
-        if (confirm
-            ("Bạn có muốn xóa phần tử này không ??")
-        ) {
-		   link = $(this).attr('href');
-		   window.location.assign(link);
-        }
+        // if (confirm
+        //     ("Bạn có muốn xóa phần tử này không ??")
+        // ) {
+		//    link = $(this).attr('href');
+		//    window.location.assign(link);
+        // }
+
+        Swal.fire(
+            'The Internet?',
+            'That thing is still around?',
+            'question'
+          )
 
 
 
@@ -37,6 +43,8 @@ $(document).ready(function () {
 
         
     });
+
+    */
 
 	// AJAX FILTER GROUP ACP SELECT BOX CHECK
 	$('#filter-bar select[name=filter_group_acp]').change(function () {
@@ -212,6 +220,71 @@ $(document).ready(function () {
 
 });
 
+const Toast = Swal.mixin({
+    toast: true,
+    position: 'top-end',
+    showConfirmButton: false,
+    timerProgressBar: true,
+    timer: 5000,
+    padding: '2rem',
+});
+
+function confirmObj(text, icon, confirmText) {
+    return {
+        position: 'top',
+        title: 'Thông báo!',
+        text: text,
+        icon: icon,
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: confirmText,
+        cancelButtonText: 'Hủy',
+    };
+};
+
+function deleteItems(id) {
+        Swal.fire({
+            position: 'center',
+            icon: 'success',
+            title: 'Your work has been saved',
+            showConfirmButton: false,
+            timer: 1500
+          })
+
+        // Swal.fire({
+        //     position: 'center',
+        //     title: 'Are you sure?',
+        //     text: "You won't be able to revert this!",
+        //     icon: 'warning',
+        //     showCancelButton: true,
+        //     confirmButtonColor: '#3085d6',
+        //     cancelButtonColor: '#d33',
+        //     confirmButtonText: 'Yes, delete it!'
+        //   }).then((result) => {
+        //     if (result.isConfirmed) {
+        //       Swal.fire(
+        //         'Deleted!',
+        //         'Your file has been deleted.',
+        //         'success'
+        //       )
+        //     }
+        //   })
+
+        // Swal.fire(confirmObj('Bạn chắc chắn muốn xóa dòng dữ liệu này?', 'error', 'Xóa')).then(
+        //     (result) => {
+        //         if (result.value) {
+        //             let moduleName = getUrlParam('module');
+        //             let controllerName = getUrlParam('controller');
+        //             // window.location.href = `index.php?module=${moduleName}&controller=${controllerName}&action=delete&id=${id}`;
+        //         }
+        //     }
+        // );
+
+        
+};    
+
+
 function getUrlParam(key) {
     let searchParams = new URLSearchParams(window.location.search);
     return searchParams.get(key);
@@ -253,30 +326,6 @@ function createLink(exceptParams) {
     return link;
 }
 
-const Toast = Swal.mixin({
-    toast: true,
-    position: 'center',
-    // position: 'top-end',
-    showConfirmButton: false,
-    timerProgressBar: true,
-    timer: 5000,
-    padding: '1rem',
-});
-
-function confirmObj(text, icon, confirmText) {
-    return {
-        position: 'top',
-        title: 'Thông báo!',
-        text: text,
-        icon: icon,
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: confirmText,
-        cancelButtonText: 'Hủy',
-    };
-}
-
 function randomString()
 {
     var stringRandom = Math.random().toString(36).slice(-10);
@@ -313,21 +362,6 @@ function showNotify($element, $type = 'success-update') {
             });
             break;
     }
-}
-
-function deleteItems(id) {
-    // alert (4444)
-    console.log(id)
-    Swal.fire(confirmObj('Bạn chắc chắn muốn xóa dòng dữ liệu này?', 'error', 'Xóa')).then(
-        (result) => {
-            if (result.value) {
-                let searchParams = new URLSearchParams(window.location.search);
-                let moduleName = searchParams.get('module');
-                let controllerName = searchParams.get('controller');
-                window.location.href = `index.php?module=${moduleName}&controller=${controllerName}&action=multi_delete&id=${id}`;
-            }
-        }
-    );
 }
 
 function showToast(type, action) {

@@ -25,6 +25,9 @@ class IndexController extends Controller{
 	{
 		$arrForm = $this->_arrParam['form'];
 		$userInfo	= Session::get('user');
+		// echo '<pre>$userInfo ';
+		// print_r($userInfo);
+		// echo '</pre>';
 		if( $userInfo['login'] == true && $userInfo['time'] + TIME_LOGIN >= time() ){
 			URL::redirect($this->_moduleName, 'dashboard', 'index');
 		}
@@ -71,7 +74,8 @@ class IndexController extends Controller{
 			$this->_view->render("{$this->_controllerName}/forgot");
 		}
 
-		$this->_view->render("{$this->_controllerName}/login");
+		// Lock
+		$this->_view->render("index/login");
 	}
 
 	public function dashboardAction()

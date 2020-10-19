@@ -44,7 +44,6 @@
     <!-- ./wrapper -->
 
     <!-- script -->
-    <?//= $this->_jsFiles; ?>
 </body>
 
 </html>

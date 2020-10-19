@@ -21,8 +21,8 @@ class HTML
             'delete' => [
                 'icon' => 'trash-alt',
                 'text' => 'Delete',
-                'link' => URL::createLink($module, $controller, 'multi_delete', ['id' => $id]),
-                // 'link' => 'javascript:deleteItems(\'' . $id . '\');',
+                // 'link' => URL::createLink($module, $controller, 'multi_delete', ['id' => $id]),
+                'link' => 'javascript:deleteItems(\'' . $id . '\');',
                 'class' => 'btn-danger btn-delete-item'
             ],
 

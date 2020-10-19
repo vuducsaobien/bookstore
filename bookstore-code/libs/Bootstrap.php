@@ -29,13 +29,12 @@ class Bootstrap{
 			$module		= $this->_params['module'];
 			$controller	= $this->_params['controller'];
 			$action		= $this->_params['action'];
-
 			$userObj	= Session::get('user');
 			$userInfo	= $userObj['info'];
 
-			// Session::delete('user');
 			// $requestURL = "$module-$controller-$action";
 			$logged		= ($userObj['login'] == true && $userObj['time'] + TIME_LOGIN >= time());
+			// $logged     = (($userObj['login'] ?? false) == true && $userObj['time'] + TIME_LOGIN >= time());
 
 			// MODULE BACKEND ADMIN
 			if ($module == 'backend'){
