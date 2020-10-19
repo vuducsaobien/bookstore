@@ -25,7 +25,6 @@ class BookModel extends Model
 			
 			$query[] = "WHERE `b`.`status` = 'active' AND `category_id` = '".$arrParam['category_id']."' ";
 			$query[] = "ORDER BY `b`.`ordering` ASC ";
-			// $query[] = "LIMIT 0, 100";
 		}
 
 		if($options['task'] == 'books-special'){
@@ -167,7 +166,6 @@ class BookModel extends Model
 			$query[]	= "FROM `".TBL_BOOK."`";
 			$query[]	= "WHERE `id` = '" . $arrParam['book_id'] . "'";
 			$query[]	= "ORDER BY `id` ASC ";
-
 		}
 
 		if ($options['task'] == 'get-category-name') {

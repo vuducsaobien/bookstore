@@ -29,21 +29,6 @@ if(!empty($this->listCategory)){
 		';
 	}
 }
-// else{
-// 	$xhtml = '
-// 	<section class="cart-section section-b-space">
-//     <div class="container">
-//         <div class="row">
-//             <div class="col-sm-12 text-center">
-//                 <i class="fa fa-cart-plus fa-5x my-text-primary"></i>
-//                 <h5 class="my-3">Không có sản phẩm nào trong giỏ hàng của bạn</h5>
-//                 <a href="index.html" class="btn btn-solid">Tiếp tục mua sắm</a>
-//             </div>
-//         </div>
-//     </div>
-// </section>
-// 	';
-// }
 
 // Pagination
 $paginationHTML		= $this->pagination->showPaginationPublic(URL::createLink($module, $controller, $action));
