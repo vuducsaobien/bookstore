@@ -13,18 +13,6 @@ if(!empty($this->book_Relate)){
 	}
 }
 
-// echo '<pre>$this->book_Relate ';
-// print_r($this->book_Relate);
-// echo '</pre>';
-
-// echo '<pre>$this->books_News ';
-// print_r($this->books_News);
-// echo '</pre>';
-
-// echo '<pre>$this->books_Special ';
-// print_r($this->books_Special);
-// echo '</pre>';
-
 $booksNews = HTML_Frontend::createSlide($this->books_News, 3);
 $booksSpecial = HTML_Frontend::createSlide($this->books_Special, 3);
 

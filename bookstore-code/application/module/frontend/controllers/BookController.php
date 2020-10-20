@@ -17,8 +17,7 @@ class BookController extends Controller
 	// ACTION: LIST BOOKS
 	public function listAction()
 	{
-		$this->_view->listCategories  = $this->_model->countItemsCategory($this->_arrParam, ['task' =>'categories-active']);
-		$this->_view->booksSpecial 		= $this->_model->list_Books_Special($this->_arrParam, ['task' => 'special-books-different-active']);
+		$this->_view->listCategories  = $this->_model->listItemsCategory($this->_arrParam, ['task' =>'categories-active']);
 
 		if( $this->_arrParam['category_id'] != null ){
 			$title = $this->_model->infoItems($this->_arrParam, ['task' =>'get-category-name'])['name'];
@@ -31,10 +30,11 @@ class BookController extends Controller
 			$this->_view->pagination	= new Pagination($totalItems, $this->_pagination);
 
 			// Items
+			$this->_view->booksSpecial	= $this->_model->list_Books_Special($this->_arrParam, ['task' => 'special-books-different-book-in-category']);
 			$this->_view->booksCategory = $this->_model->listItems($this->_arrParam, ['task' => 'books-in-category']);
 
 		}else{
-			$totalItems	= $this->_model->countItems($this->_arrParam, ['task' => 'all-books-active']);
+			$totalItems	= $this->_model->countItems($this->_arrParam, ['task' => 'books-active']);
 
 			// Title
 			if(!empty($this->_arrParam['search'])){
@@ -57,7 +57,8 @@ class BookController extends Controller
 			$this->_view->pagination 	= new Pagination($totalItems, $this->_pagination);
 
 			// Items
-			$this->_view->booksActive   = $this->_model->listItems($this->_arrParam, ['task' =>'all-books-active']);
+			$this->_view->booksSpecial	= $this->_model->list_Books_Special($this->_arrParam, ['task' => 'special-books-different-active']);
+			$this->_view->booksActive   = $this->_model->listItems($this->_arrParam, ['task' =>'books-active']);
 		}
 
 		// Page Error
@@ -74,6 +75,7 @@ class BookController extends Controller
 	{
 		$title = $this->_model->infoItems($this->_arrParam, ['task' =>'get-book-name'])['name'];
 
+		// Items
 		$this->_view->bookInfo  = $this->_model->infoItems($this->_arrParam, ['task' =>'book-info']);
 		
 		$this->_view->book_Relate  		= $this->_model->listItems($this->_arrParam, ['task' => 'different-relate']);

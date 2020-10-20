@@ -76,15 +76,24 @@ class IndexModel extends Model
 	public function listItems($arrParam, $options = null)
 	{
 		if($options['task'] == 'books-special'){
-			$tableAs = '`b`';
 			$query[] = "SELECT `b`.`id`, `b`.`name`, `b`.`picture`, `b`.`sale_off`, `b`.`price`, `b`.`category_id`, `c`.`name` AS `category_name`, 
 			`b`.`description`";
 			$query[]	= "FROM `".TBL_BOOK."` AS `b` LEFT JOIN `".TBL_CATEGORY."` AS `c` ON `b`.`category_id` = `c`.`id`";
 
-			$query[] = "WHERE $tableAs.`status` = 'active' AND `b`.`special` = 1";
+			$query[] = "WHERE `b`.`status` = 'active' AND `b`.`special` = 1";
 			$query[] = "ORDER BY `b`.`ordering` ASC ";
 			$query[] = "LIMIT 0, 6";
 		}
+
+		if($options['task'] == 'books-special-id'){
+			$query[] = "SELECT `b`.`id`, `b`.`picture` ";
+			$query[]	= "FROM `".TBL_BOOK."` AS `b` ";
+
+			$query[] = "WHERE `b`.`status` = 'active' AND `b`.`special` = 1";
+			$query[] = "ORDER BY `b`.`ordering` ASC ";
+			$query[] = "LIMIT 0, 6";
+		}
+
 
 		if($options['task'] == 'books-category' ){
 
@@ -103,13 +112,15 @@ class IndexModel extends Model
             {
                 foreach($arrTemp as $key => $item)
                 {
+					$arr_different_ids = $this->listItems($arrParam, ['task' => 'books-special-id']);
+					$IDs = HTML_Frontend::differentIDs($arr_different_ids);
+
                     $query   = [];
-					$query[] = "SELECT `b`.`id`, `b`.`name`, `b`.`picture`, `b`.`sale_off`, `b`.`price`, `b`.`category_id`, `c`.`name` AS `category_name`, 
-					`b`.`description`";
-					$query[]	= "FROM `".TBL_BOOK."` AS `b` LEFT JOIN `".TBL_CATEGORY."` AS `c` ON `b`.`category_id` = `c`.`id`";
+					$query[] = "SELECT `b`.`id`, `b`.`name`, `b`.`picture`, `b`.`sale_off`, `b`.`price`, `b`.`category_id`, `c`.`name` AS `category_name` ";
+					$query[] = "FROM `".TBL_BOOK."` AS `b` LEFT JOIN `".TBL_CATEGORY."` AS `c` ON `b`.`category_id` = `c`.`id`";
 
 					$query[] = "WHERE `b`.`category_id` = '{$item['category_id']}'";
-					$query[] = "AND `b`.`status` = 'active'";
+					$query[] = "AND `b`.`status` = 'active' AND `b`.`id` NOT IN $IDs ";
 					$query[] = "ORDER BY `b`.`ordering` ASC";
 					$query[] = "LIMIT 0, 8";
 

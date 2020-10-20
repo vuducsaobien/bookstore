@@ -176,7 +176,6 @@ class HTML_Frontend
         return $picture;
     }
 
-
     public static function showPriceProductBox($price, $saleOff)
     {
         $priceFormat        = self::moneyFormat($price, null);
@@ -332,6 +331,26 @@ class HTML_Frontend
 			}
 		}
     }
+
+    public static function differentIDs($arr_different_ids)
+    {
+        if(!empty($arr_different_ids)){
+
+            $different_ids = '';
+            foreach($arr_different_ids as $value){
+                $different_ids .= $value['id']. ',';
+            }
+            
+            $arr_IDs = rtrim($different_ids, ", ");
+            $IDs = "($arr_IDs)";
+
+        }else{
+            $IDs = "(0)";
+        }
+
+        return $IDs;
+    }
+    
 
     
 
