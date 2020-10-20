@@ -42,7 +42,7 @@ $(document).ready(function () {
         let id = $(this).data('id');
         // let url = rootURL + `index.php?module=${moduleName}&controller=${controllerName}&action=ajaxQuantitiesCart&id=${id}&quantities=${quantities}`;
         let url = `index.php?module=${moduleName}&controller=${controllerName}&action=ajaxQuantitiesCart&id=${id}&quantities=${quantities}`;
-console.log(url)
+        console.log(url)
 
         // $('.changeQuantity').attr('href', url)
 
@@ -85,7 +85,17 @@ console.log(url)
     });
 
     $('#sort-form select[name="sort"]').change(function () {
-        console.log(getUrlParam('filter_price'));
+        // console.log(getUrlParam('category_id'));
+        // console.log(getUrlParam('filter_price'));
+
+        if (getUrlParam('category_id')) {
+            $('#sort-form').append(
+                '<input type="hidden" name="category_id" value="' +
+                    getUrlParam('category_id') +
+                    '">'
+            );
+        }
+
         if (getUrlParam('filter_price')) {
             $('#sort-form').append(
                 '<input type="hidden" name="filter_price" value="' +

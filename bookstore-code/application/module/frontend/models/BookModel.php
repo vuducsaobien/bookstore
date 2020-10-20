@@ -14,68 +14,7 @@ class BookModel extends Model
 		$this->setTable(TBL_BOOK);
 	}
 
-	public function list_Books_Relate($arrParam, $options = null)
-	{
-		$bookID = $arrParam['book_id'];
-		$cateID = $arrParam['category_id'];
-
-		if($options['task'] == null){
-			$query[] = "SELECT `b`.`id`, `b`.`name`, `b`.`picture`, `b`.`sale_off`, `b`.`price`, `b`.`description`, 
-			`c`.`id` AS `category_id`, `c`.`name` AS `category_name`";
-
-		}elseif($options['task'] == 'different-relate'){
-			$query[] = "SELECT `b`.`id` AS `ids_realate`";
-		}
-
-		$query[] = "FROM `".TBL_BOOK."` AS `b` LEFT JOIN `".TBL_CATEGORY."` AS `c` ON `b`.`category_id` = `c`.`id`";
-		$query[] = "WHERE `b`.`status` = 'active' AND `b`.`category_id` = '$cateID' AND `b`.`id` <> '$bookID'";
-		$query[] = "ORDER BY `b`.`ordering` ASC ";
-		$query[] = "LIMIT 0, 6";
-
-		$query		= implode(' ', $query);
-		// echo $query		= implode(' ', $query);
-		// echo '<br>';
-		$result		= $this->fetchAll($query);
-		return $result;
-
-	}
-
-	public function list_Books_News($arrParam, $options = null)
-	{
-		$bookID = $arrParam['book_id'];
-		$cateID = $arrParam['category_id'];
-
-		// # IDs Different Book Relate
-		$different_ids = '';
-		$arr_different_ids = $this->list_Books_Relate($arrParam, ['task' => 'different-relate']);
-		foreach($arr_different_ids as $value){
-			$different_ids .= $value['ids_realate']. ',';
-		}
-		$arr_IDs = rtrim($different_ids, ", ");
-		// echo $IDs = "($arr_IDs)";
-		// echo '<br>';
-		$IDs = "($arr_IDs)";
-		
-		if($options['task'] == 'news-books-different-relate'){
-			$query[] = "SELECT `b`.`id`, `b`.`name`, `b`.`picture`, `b`.`sale_off`, `b`.`price`, `b`.`category_id`, `c`.`name` AS `category_name`";
-
-		}elseif($options['task'] == 'different-news'){
-			$query[] = "SELECT `b`.`id` AS `ids_news`";
-		}
-
-		$query[] = "FROM `".TBL_BOOK."` AS `b` LEFT JOIN `".TBL_CATEGORY."` AS `c` ON `b`.`category_id` = `c`.`id`";
-		$query[] = "WHERE `b`.`status` = 'active' AND `b`.`id` <> '$bookID' AND `b`.`id` NOT IN $IDs ";
-		$query[] = "ORDER BY `b`.`id` DESC ";
-		$query[] = "LIMIT 0, 9";
-
-		$query		= implode(' ', $query);
-		// echo $query		= implode(' ', $query);
-		// echo '<br>';
-		$result		= $this->fetchAll($query);
-		return $result;
-	}
-
-	public function listItems($arrParam, $options = null)
+	public function list_Books_Special($arrParam, $options = null)
 	{
 		$bookID = $arrParam['book_id'];
 		$cateID = $arrParam['category_id'];
@@ -84,9 +23,38 @@ class BookModel extends Model
 
 			// # IDs Different Book Relate
 			$different_ids_relate = '';
-			$arr_different_ids_relate = $this->list_Books_Relate($arrParam, ['task' => 'different-relate']);
+			$arr_different_ids_relate = $this->listItems($arrParam, ['task' => 'different-relate-id']);
 			foreach($arr_different_ids_relate as $value_relate){
-				$different_ids_relate .= $value_relate['ids_realate']. ',';
+				$different_ids_relate .= $value_relate['ids_relate']. ',';
+			}
+
+			// # IDs Different Book News
+			$different_ids_news = '';
+			$arr_different_ids_news = $this->list_Books_News($arrParam, ['task' => 'different-news']);
+			foreach($arr_different_ids_news as $value_news){
+				$different_ids_news .= $value_news['ids_news']. ',';
+			}
+			$IDs_special = $different_ids_relate . $different_ids_news;
+
+			$arr_IDs_special = rtrim($IDs_special, ", ");
+			$IDs = "($arr_IDs_special)";
+			
+			// Get Info from database # News + # Relate
+			$query[] = "SELECT `b`.`id`, `b`.`name`, `b`.`picture`, `b`.`sale_off`, `b`.`special`, `b`.`ordering`, `b`.`price`, `b`.`category_id`, `b`.`description`, `c`.`name` AS `category_name`";
+			$query[]	= "FROM `".TBL_BOOK."` AS `b` LEFT JOIN `".TBL_CATEGORY."` AS `c` ON `b`.`category_id` = `c`.`id`";
+
+			$query[] = "WHERE `b`.`status` = 'active' AND `b`.`special` = 1 AND `b`.`id` <> '$bookID' AND `b`.`id` NOT IN $IDs ";
+			$query[] = "ORDER BY `b`.`ordering` ASC ";
+			$query[] = "LIMIT 0, 30";
+		}
+
+		if($options['task'] == 'special-books-different-active'){
+
+			// # IDs Different Book Relate
+			$different_ids_relate = '';
+			$arr_different_ids_relate = $this->listItems($arrParam, ['task' => 'different-relate-id']);
+			foreach($arr_different_ids_relate as $value_relate){
+				$different_ids_relate .= $value_relate['ids_relate']. ',';
 			}
 
 			// # IDs Different Book News
@@ -109,13 +77,86 @@ class BookModel extends Model
 			$query[] = "LIMIT 0, 9";
 		}
 
+		$query		= implode(' ', $query);
+		// echo $query		= implode(' ', $query);
+		// echo '<br>';
+		$result		= $this->fetchAll($query);
+		return $result;
+
+	}
+
+	public function list_Books_News($arrParam, $options = null)
+	{
+		$bookID = $arrParam['book_id'];
+
+		// # IDs Different Book Relate
+		$different_ids = '';
+		$arr_different_ids = $this->listItems($arrParam, ['task' => 'different-relate-id']);
+		foreach($arr_different_ids as $value){
+			$different_ids .= $value['ids_relate']. ',';
+		}
+		$arr_IDs = rtrim($different_ids, ", ");
+		$IDs = "($arr_IDs)";
+		
+		if($options['task'] == 'news-books-different-relate'){
+			$query[] = "SELECT `b`.`id`, `b`.`name`, `b`.`picture`, `b`.`sale_off`, `b`.`price`, `b`.`category_id`, `c`.`name` AS `category_name`";
+
+		}elseif($options['task'] == 'different-news'){
+			// $query[] = "SELECT `b`.`id` AS `ids_news`, `b`.`name`, `b`.`ordering`";
+			$query[] = "SELECT `b`.`id` AS `ids_news`";
+		}
+
+		$query[] = "FROM `".TBL_BOOK."` AS `b` LEFT JOIN `".TBL_CATEGORY."` AS `c` ON `b`.`category_id` = `c`.`id`";
+		$query[] = "WHERE `b`.`status` = 'active' AND `b`.`id` <> '$bookID' AND `b`.`id` NOT IN $IDs ";
+		// $query[] = "ORDER BY `b`.`id` DESC";
+
+		$query[] = "ORDER BY `b`.`id` DESC, `b`.`ordering` ASC";
+		$query[] = "LIMIT 0, 9";
+
+		$query		= implode(' ', $query);
+		// echo $query		= implode(' ', $query);
+		// echo '<br>';
+		$result		= $this->fetchAll($query);
+		return $result;
+	}
+
+	public function listItems($arrParam, $options = null)
+	{
+		$bookID = $arrParam['book_id'];
+		$cateID = $arrParam['category_id'];
+
+		if($options['task'] == 'different-relate' || $options['task'] == 'different-relate-id'){
+
+			if($options['task'] == 'different-relate'){
+				$query[] = "SELECT `b`.`id`, `b`.`name`, `b`.`picture`, `b`.`sale_off`, `b`.`price`, `b`.`description`, 
+				`c`.`id` AS `category_id`, `c`.`name` AS `category_name`";
+			}
+
+			if($options['task'] == 'different-relate-id') $query[] = "SELECT `b`.`id` AS `ids_relate`, `b`.`picture` ";
+				// Notice Select id & Select id, picture => 2 results different !!
+
+			$query[] = "FROM `".TBL_BOOK."` AS `b` LEFT JOIN `".TBL_CATEGORY."` AS `c` ON `b`.`category_id` = `c`.`id`";
+			$query[] = "WHERE `b`.`status` = 'active' AND `b`.`category_id` = '$cateID' AND `b`.`id` <> '$bookID'";
+			$query[] = "ORDER BY `b`.`ordering` ASC ";
+			$query[] = "LIMIT 0, 6";			
+		}
+
 		if($options['task'] == 'all-books-active'){
 			$query[] = "SELECT `b`.`id`, `b`.`name`, `b`.`picture`, `b`.`sale_off`, `b`.`special`, `b`.`ordering`, `b`.`price`, `b`.`category_id`, `c`.`name` AS `category_name`, 
 			`b`.`description`";
 			$query[]	= "FROM `".TBL_BOOK."` AS `b` LEFT JOIN `".TBL_CATEGORY."` AS `c` ON `b`.`category_id` = `c`.`id`";
-
 			$query[] = "WHERE `b`.`status` = 'active'";
+		}
 
+		if($options['task'] == 'books-in-category'){
+			$query[] = "SELECT `b`.`id`, `b`.`name`, `b`.`picture`, `b`.`sale_off`, `b`.`special`, `b`.`ordering`, `b`.`price`, `b`.`category_id`, `c`.`name` AS `category_name`, 
+			`b`.`description`";
+			$query[]	= "FROM `".TBL_BOOK."` AS `b` LEFT JOIN `".TBL_CATEGORY."` AS `c` ON `b`.`category_id` = `c`.`id`";			
+			$query[] = "WHERE `b`.`status` = 'active' AND `category_id` = '".$arrParam['category_id']."' ";
+		}
+
+		if( $options['task'] == 'all-books-active' || $options['task'] == 'books-in-category' ){
+			// Filter Search
 			if (!empty($arrParam['search'])) {
 				$keyword     		 = "'%{$arrParam['search']}%'";
 				$query[] 	 		 = "AND (";
@@ -139,25 +180,11 @@ class BookModel extends Model
 				}elseif($arrParam['sort'] == 'latest'){
 					$query[] = "ORDER BY `b`.`id` DESC";
 				}
-			}else{
-				$query[] = "ORDER BY `b`.`ordering` ASC ";
+
+				}else{
+					$query[] = "ORDER BY `b`.`ordering` ASC ";
 			}
-		}
-
-		if($options['task'] == 'books-category'){
-			$query[] = "SELECT `b`.`id`, `b`.`name`, `b`.`picture`, `b`.`sale_off`, `b`.`special`, `b`.`ordering`, `b`.`price`, `b`.`category_id`, `c`.`name` AS `category_name`, 
-			`b`.`description`";
-			$query[]	= "FROM `".TBL_BOOK."` AS `b` LEFT JOIN `".TBL_CATEGORY."` AS `c` ON `b`.`category_id` = `c`.`id`";
 			
-			$query[] = "WHERE `b`.`status` = 'active' AND `category_id` = '".$arrParam['category_id']."' ";
-			$query[] = "ORDER BY `b`.`ordering` ASC ";
-		}
-
-
-		if(
-			$options['task'] == 'all-books-active' ||
-			$options['task'] == 'books-category'
-		){
 			// PAGINATION
 			$pagination			= $arrParam['pagination'];
 			$totalItemsPerPage	= $pagination['totalItemsPerPage'];
@@ -171,46 +198,39 @@ class BookModel extends Model
 		// echo $query		= implode(" ", $query);
 		// echo '<br>';
 		$result		= $this->fetchAll($query);
-
 		return $result;
-
 	}
 
 	public function countItems($arrParam, $options = null)
 	{
-		if($options==null){
-
+		if($options['task']=='books-in-category'){
 			$query[]	= "SELECT COUNT(`b`.`id`) AS `totalBook`, `b`.`category_id`, 
 			`c`.`name` AS `category_name`, `c`.`picture` AS `category_picture`";
 			$query[]	= "FROM `".TBL_BOOK."` AS `b` LEFT JOIN `".TBL_CATEGORY."` AS `c` ON `b`.`category_id` = `c`.`id`";
-
 			$query[]	= "WHERE `b`.`status` = 'active' AND `b`.`category_id` = ".$arrParam['category_id']."    ";
-
-			$query		= implode(" ", $query);
-			$result = $this->fetchRow($query)['totalBook'];
 		}
 
-		if($options=='all-books-active'){
+		if($options['task']=='all-books-active'){
 			$query[]	= "SELECT COUNT(`b`.`id`) AS `totalBook`, `b`.`category_id`, 
 			`c`.`name` AS `category_name`, `c`.`picture` AS `category_picture`";
 			$query[]	= "FROM `".TBL_BOOK."` AS `b` LEFT JOIN `".TBL_CATEGORY."` AS `c` ON `b`.`category_id` = `c`.`id`";
-
 			$query[]	= "WHERE `b`.`status` = 'active'";
-
-			if (!empty($arrParam['search'])) {
-				$keyword     		 = "'%{$arrParam['search']}%'";
-				$query[] 	 		 = "AND (";
-				foreach ($this->fieldSearchAcceptedBook as $field) {
-					$query[] = "`b`.`$field` LIKE $keyword";
-					$query[] = "OR";
-				}
-				array_pop($query);
-				$query[] = ")";
-			}
-
-			$query		= implode(" ", $query);
-			$result = $this->fetchRow($query)['totalBook'];
 		}
+
+		if (!empty($arrParam['search'])) {
+			$keyword     		 = "'%{$arrParam['search']}%'";
+			$query[] 	 		 = "AND (";
+			foreach ($this->fieldSearchAcceptedBook as $field) {
+				$query[] = "`b`.`$field` LIKE $keyword";
+				$query[] = "OR";
+			}
+			array_pop($query);
+			$query[] = ")";
+		}
+
+		$query		= implode(" ", $query);
+		$result = $this->fetchRow($query)['totalBook'];
+
 		return $result;
 	}
 

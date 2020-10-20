@@ -1,3 +1,4 @@
+# Default Open file when start
 DirectoryIndex index.php
 
 Options -Indexes
@@ -17,8 +18,19 @@ Deny from all
 RewriteEngine On
 RewriteCond %{REQUEST_FILENAME} -s [OR]
 RewriteCond %{REQUEST_FILENAME} -l [OR]
+
+# Remove querry_string
+#RewriteCond %{QUERY_STRING} -l [OR]
+
 RewriteCond %{REQUEST_FILENAME} -d
 RewriteRule ^.*$ - [NC,L]
+
+#RewriteRule ^ index.php [L]
+
+# Steal Bandwidth
+# RewriteCond %{HTTP_REFERER} !^$ RewriteCond %{HTTP_REFERER} !^http://(www\.)?ducvuphp03\.zdemo.xyz/.*$ [NC] RewriteRule \.(gif|jpg)$ – [F]
+
+
 
 RewriteRule		index.html 			    index.php?module=frontend&controller=index&action=index
 RewriteRule		category.html 		    index.php?module=frontend&controller=category&action=index [QSA]
@@ -28,17 +40,18 @@ RewriteRule		cart.html 			    index.php?module=frontend&controller=user&action=c
 RewriteRule		my-account.html 	    index.php?module=frontend&controller=user&action=index
 RewriteRule		change-password.html 	index.php?module=frontend&controller=user&action=reset_password
 RewriteRule		history.html 		    index.php?module=frontend&controller=user&action=history
-
-RewriteRule		book.html		        index.php?module=frontend&controller=book&action=list [QSA]
-
 RewriteRule		success-buy.html 		index.php?module=frontend&controller=index&action=notice&type=success-buy
 RewriteRule		success-login.html 		index.php?module=frontend&controller=index&action=notice&type=success-login
-
 RewriteRule		not-found.html 		    index.php?module=frontend&controller=index&action=notice&type=not-found
 
-RewriteRule		([A-Za-z0-9_-]+)-([0-9]+)\.html 	                        index.php?module=frontend&controller=book&action=list&category_id=$2 [QSA]
+RewriteRule		book.html		        index.php?module=frontend&controller=book&action=list [QSA]
+#RewriteRule    book.html(.*)		    index.php?module=frontend&controller=book&action=list$1 [QSA]
+#RewriteRule ^search(.*)                index.php?module=frontend&controller=book&action=list&$1 [QSA]
+#RewriteRule ^sort(.*)                  index.php?module=frontend&controller=book&action=list&$1 [QSA]
 
-RewriteRule	([A-Za-z0-9_-]+)/([A-Za-z0-9_-]+)-([0-9]+)-([0-9]+)\.html index.php?module=frontend&controller=book&action=index&category_id=$3&book_id=$4
+RewriteRule		([A-Za-z0-9_-]+)-([0-9]+)\.html 	                        index.php?module=frontend&controller=book&action=list&category_id=$2 [QSA]
+RewriteRule	    ([A-Za-z0-9_-]+)/([A-Za-z0-9_-]+)-([0-9]+)-([0-9]+)\.html index.php?module=frontend&controller=book&action=index&category_id=$3&book_id=$4
 
 RewriteRule		notice-([A-Za-z0-9_-]+).html   index.php?module=frontend&controller=index&action=notice&type=$5
 
+ErrorDocument 404 /bookstore-code/error.html

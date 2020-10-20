@@ -14,28 +14,29 @@ class BookController extends Controller
 		$this->_actionName = $this->_arrParam['action'];
 	}
 
-	// ACTION: LIST GROUP
+	// ACTION: LIST BOOKS
 	public function listAction()
 	{
 		$this->_view->listCategories  = $this->_model->countItemsCategory($this->_arrParam, ['task' =>'categories-active']);
-		$this->_view->booksSpecial 		= $this->_model->listItems($this->_arrParam, ['task' => 'books-special']);
+		$this->_view->booksSpecial 		= $this->_model->list_Books_Special($this->_arrParam, ['task' => 'special-books-different-active']);
 
-		if(!empty($this->_arrParam['category_id'])){
+		if( $this->_arrParam['category_id'] != null ){
 			$title = $this->_model->infoItems($this->_arrParam, ['task' =>'get-category-name'])['name'];
 
 			// Pagination
-			$totalItems					= $this->_model->countItems($this->_arrParam);
+			$totalItems					= $this->_model->countItems($this->_arrParam, ['task' => 'books-in-category']);
 			$this->_view->totalItems 		= $totalItems;
 			$configPagination 			= ['totalItemsPerPage' => 8, 'pageRange' => 3];
 			$this->setPagination($configPagination);
 			$this->_view->pagination	= new Pagination($totalItems, $this->_pagination);
 
 			// Items
-			$this->_view->booksCategory = $this->_model->listItems($this->_arrParam, ['task' => 'books-category']);
+			$this->_view->booksCategory = $this->_model->listItems($this->_arrParam, ['task' => 'books-in-category']);
 
 		}else{
-			$totalItems	= $this->_model->countItems($this->_arrParam, 'all-books-active');
+			$totalItems	= $this->_model->countItems($this->_arrParam, ['task' => 'all-books-active']);
 
+			// Title
 			if(!empty($this->_arrParam['search'])){
 				$searchValue = $this->_arrParam['search'];
 				$title = "Tìm kiếm cho '$searchValue': $totalItems Kết quả.";
@@ -49,10 +50,13 @@ class BookController extends Controller
 				case 'latest':		$title = 'Sách Mới Nhất | Book-Store';		break;				
 			}
 
+			// Pagination
 			$this->_view->totalItems 	= $totalItems;
 			$configPagination 		 	= ['totalItemsPerPage' => 12, 'pageRange' => 3];
 			$this->setPagination($configPagination);
 			$this->_view->pagination 	= new Pagination($totalItems, $this->_pagination);
+
+			// Items
 			$this->_view->booksActive   = $this->_model->listItems($this->_arrParam, ['task' =>'all-books-active']);
 		}
 
@@ -72,9 +76,9 @@ class BookController extends Controller
 
 		$this->_view->bookInfo  = $this->_model->infoItems($this->_arrParam, ['task' =>'book-info']);
 		
-		$this->_view->book_Relate  		= $this->_model->list_Books_Relate($this->_arrParam);
+		$this->_view->book_Relate  		= $this->_model->listItems($this->_arrParam, ['task' => 'different-relate']);
 		$this->_view->books_News 		= $this->_model->list_Books_News($this->_arrParam, ['task' => 'news-books-different-relate']);
-		$this->_view->books_Special 		= $this->_model->listItems($this->_arrParam, ['task' => 'special-books-different-relate-news']);
+		$this->_view->books_Special		= $this->_model->list_Books_Special($this->_arrParam, ['task' => 'special-books-different-relate-news']);
 
 		$this->_view->setTitle($title);
 		$this->_view->render("{$this->_controllerName}/index");
