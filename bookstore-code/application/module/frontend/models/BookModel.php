@@ -12,7 +12,6 @@ class BookModel extends Model
 		parent::__construct();
 		$this->setTable(TBL_BOOK);
 	}
-
 	
 	public function list_Books_News($arrParam, $options = null)
 	{
@@ -252,6 +251,36 @@ class BookModel extends Model
 			$query[]	= "ORDER BY `id` ASC ";
 		}
 
+		if($options['task'] == 'info-book'){
+			$bookID = $arrParam['book_id'];
+			
+			$query[] = "SELECT `b`.`id`, `b`.`name`, `b`.`price`, `b`.`sale_off`, `b`.`picture`, `b`.`short_description`, `b`.`category_id`, `c`.`name` AS `category_name`";
+			$query[] = "FROM `$this->table` AS `b`, " . TBL_CATEGORY . " AS `c`";
+			$query[] = "WHERE `b`.`category_id` = `c`.`id` AND `b`.`id` = $bookID";
+
+			$query		= implode(" ", $query);
+			$resultQry		= $this->fetchRow($query);
+
+			if (!empty($resultQry)) {
+                $bookNameURL = URL::filterURL($resultQry['name']);
+				$cateNameURL = URL::filterURL($resultQry['category_name']);
+				$cateID = $resultQry['category_id'];
+
+                // $router = "$categoryNameURL/$bookNameURL-b$bookID.html";
+				$link = URL::createLink('frontend', 'book', 'index', ['book_id' => $bookID, 'category_id' => $cateID], 
+				"$cateNameURL/$bookNameURL-$cateID-$bookID.html");
+				
+				$result['name'] = $resultQry['name'];
+				$result['link'] = $link;
+				$result['short_description'] = $resultQry['short_description'];
+				$result['sale_off'] 		 = $resultQry['sale_off'];
+				$result['price'] 			 = HTML_Frontend::moneyFormat($resultQry['price']);
+				$result['sale_price'] 		 = HTML_Frontend::moneyFormat(null, 'price_sale', $resultQry['price'], $resultQry['sale_off']);
+                $result['src_picture'] 		 = HTML_Frontend::getSrcPicture($resultQry['picture'], TBL_BOOK);
+            }
+
+		}
+
 		if ($options['task'] == 'get-category-name') {
 			$query[] 	= "SELECT `name`";
 			$query[]	= "FROM `".TBL_CATEGORY."`";
@@ -264,8 +293,10 @@ class BookModel extends Model
 			$query[]	= "WHERE `id` = '" . $arrParam['book_id'] . "'";
 		}
 
-		$query		= implode(" ", $query);
-		$result		= $this->fetchRow($query);
+		if($options['task'] != 'info-book'){
+			$query		= implode(" ", $query);
+			$result		= $this->fetchRow($query);
+		}
 		return $result;
 	}
 

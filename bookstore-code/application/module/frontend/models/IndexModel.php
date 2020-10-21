@@ -44,33 +44,14 @@ class IndexModel extends Model
 
 			$query[]	= "SELECT `u`.`id`, `u`.`fullname`, `u`.`status`, `u`.`password`, `u`.`phone`, `u`.`address`,
 			`u`.`email`, `u`.`username`, `u`.`group_id`, `g`.`group_acp`";
-
 			$query[]	= "FROM `user` AS `u` LEFT JOIN `group` AS g ON `u`.`group_id` = `g`.`id`";
 			$query[]	= "WHERE `email` = '$email' AND `password` = '$password'";		
-
-			$query		= implode(" ", $query);
-			$result		= $this->fetchRow($query);					
-			return $result;
-	
-
-		}
-
-		if($options['task'] == 'info-book'){
-			
-			$query[] = "SELECT `id`, `name`, `price`, `sale_off`, `picture`, `short_description`, `category_id`";
-			$query[] = "FROM `".TBL_BOOK."`";
-			$query[] = "WHERE `id` = '{$arrParam['id']}'";
-
-			$query		= implode(" ", $query);
-			$result		= $this->fetchRow($query);	
-			$result['price_format'] = HTML_Frontend::moneyFormat(null, 'price_sale', $result['price'], $result['sale_off']);
-
-			return $result;
-
 		}
 
 
-
+		$query		= implode(" ", $query);
+		$result		= $this->fetchRow($query);					
+		return $result;
 	}
 
 	public function listItems($arrParam, $options = null)

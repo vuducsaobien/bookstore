@@ -14,6 +14,8 @@
 
 <body>
     <script>
+        var module = '<?= $this->arrParam['module'] ?>';
+        var controller = '<?= $this->arrParam['controller'] ?>';
         var rootURL = '<?php echo URL_ROOT ?>';
     </script>
 

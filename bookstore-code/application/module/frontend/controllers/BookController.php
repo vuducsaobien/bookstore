@@ -85,6 +85,13 @@ class BookController extends Controller
 		$this->_view->setTitle($title);
 		$this->_view->render("{$this->_controllerName}/index");
 	}
+
+	public function quickViewAction()
+	{
+		$result = $this->_model->infoItems($this->_arrParam, ['task' => 'info-book']);
+		echo json_encode($result);
+	}
+
 	
 
 

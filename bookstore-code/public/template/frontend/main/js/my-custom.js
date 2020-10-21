@@ -18,7 +18,6 @@ $(document).ready(function () {
 		   window.location.assign(link);
 	   }
     });
-
     // $('.input-number').change(function (e) {
         // input = $(this)
         // id = input.data('id')
@@ -85,8 +84,6 @@ $(document).ready(function () {
     });
 
     $('#sort-form select[name="sort"]').change(function () {
-        // console.log(getUrlParam('category_id'));
-        // console.log(getUrlParam('filter_price'));
 
         if (getUrlParam('category_id')) {
             $('#sort-form').append(
@@ -121,43 +118,28 @@ $(document).ready(function () {
     }, 4000);
 });
 
-function activeMenu() {
-    // let controller = getUrlParam('controller') == null ? 'index' : getUrlParam('controller');
-    // let action = getUrlParam('action') == null ? 'index' : getUrlParam('action');
-    let dataActive = controller + '-' + action;
-    $(`a[data-active=${dataActive}]`).addClass('my-menu-link active');
-}
-
 function getUrlParam(key) {
     let searchParams = new URLSearchParams(window.location.search);
     return searchParams.get(key);
 }
 
 // DUC
-function quickView(linkAction)
+function quickView(id)
 {
-    console.log(linkAction)
-
-    var searchParams = new URLSearchParams(window.location.search);
-    var moduleName = searchParams.get('module');
-    var controllerName = searchParams.get('controller');
-    var linkImage = '/php_offline_VuVanDUC/php03/bookstore/public/files/book/';
-    $.get(linkAction, function(data)
+    var link = rootURL + `index.php?module=${module}&controller=book&action=quickView&book_id=` + id;
+    $.get(link, function(data)
         {
-            var bookID = data.id
-            var cateID = data.category_id
-            
-            var linkDetail = rootURL + `index.php?module=frontend&controller=book&action=index&book_id=${bookID}&category_id=${cateID}`
-            var buttonDetail = $('div.product-buttons #button-detail');
-
+            // console.log(data)
+            let originalPrice = data.price;
+            let salePrice = data.sale_price;
+            let xhtmlPrice = data.sale_off == 0 ? originalPrice : `${salePrice} <del>${originalPrice}</del>`;
+            $('#quick-view .book-price').html(xhtmlPrice);
             $('h2.book-name').html(data.name)
-            $('h3.book-price').html(data.price_format)
             $('div.book-description').html(data.short_description)
-            $('img.book-picture').attr('src', linkImage+data.picture)
-
-            $('.btn-view-book-detail').attr('href', linkDetail)
-        }, 
-        'json'
+            $('img.book-picture').attr('src', data.src_picture)
+            $('.btn-view-book-detail').attr('href', data.link)
+            // var buttonDetail = $('div.product-buttons #button-detail');
+        }, 'json'
     );
 };
 

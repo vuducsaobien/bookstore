@@ -116,12 +116,6 @@ class IndexController extends Controller{
 		URL::redirect($this->_moduleName, $this->_controllerName, 'index', null, 'index.html');
 	}
 
-	public function quickViewAction()
-	{
-		$result = $this->_model->infoItems($this->_arrParam, ['task' => 'info-book']);
-		echo json_encode($result);
-	}
-
 
 	
 }

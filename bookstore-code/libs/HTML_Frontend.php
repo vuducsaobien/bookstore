@@ -20,17 +20,15 @@ class HTML_Frontend
         }
 
         $price              = self::showPriceProductBox($product['price'], $product['sale_off']);
-        
         $shortDescription   = substr($product['description'], 0, 100) .' ...';
         $shortDescription   = $showDescription ? self::showShortDescription($shortDescription) : '';
-
         $classImage         = 'img-fluid blur-up lazyload bg-img';
         $divStartImage      = '<div class="front">';
         $divEndImage        = '</div>';
         $srcPicture         = self::getSrcPicture($product['picture'], TBL_BOOK);
 
         $priceOrder         = self::moneyFormat(null, 'price_order', $product['price'], $product['sale_off']);
-        $addToCartLink      = URL::createLink('frontend', 'user', 'order', ['book_id' => $bookID, 'price' => $priceOrder]);
+        // $addToCartLink      = URL::createLink('frontend', 'user', 'order', ['book_id' => $bookID, 'price' => $priceOrder]);
         
         $resultName     = Helper::highLightPublic($searchValue, $product['name']);
         $productName        = $showName ? self::showProductName($link, $resultName) : '';
@@ -41,8 +39,8 @@ class HTML_Frontend
                     '.self::showSaleOffLabel($product['sale_off']).'
                     '.self::showProductImage($link, $srcPicture, $product['name'], $classImage,  true, $divStartImage, $divEndImage).'
                     <div class="cart-info cart-wrap">
-                        '.self::showBtnAddToCartProductBox($addToCartLink).'
-                        '.self::showBtnQuickView(URL_ROOT, $bookID, $cateID).'
+                        '.self::showBtnAddToCartProductBox($bookID).'
+                        '.self::showBtnQuickView($bookID).'
                     </div>
                 </div>
 
@@ -68,19 +66,21 @@ class HTML_Frontend
         return $xhtml;
     }
 
-
-    public static function showBtnAddToCartProductBox($addToCartLink)
+    public static function showBtnAddToCartProductBox($id)
     {
-        // $xhtml = '<a href="'.$addToCartLink.'" title="Add to cart"><i class="ti-shopping-cart"></i></a>';
-        $xhtml = '<a href="javascript:addToCart(\'' . $addToCartLink . '\');" title="Add to cart"><i class="ti-shopping-cart"></i></a>';
+        // $xhtml = '<a href="javascript:addToCart(\'' . $bookID . '\');" title="Add to cart"><i class="ti-shopping-cart"></i></a>';
+        $xhtml = '<a href="javascript:addToCart('.$id.')" title="Add to cart"><i class="ti-shopping-cart"></i></a>';
+        // $xhtml = '<a href="javascript:quickViewBook(' . $id . ')" title="Quick View"><i class="ti-search" aria-hidden="true"></i></a>';
+
         return $xhtml;
     }
 
-    public static function showBtnQuickView($root=null, $bookID=null, $cateID=null)
+    public static function showBtnQuickView($id)
     {
-        $link = URL::createLink('frontend', 'index', 'quickView', ['id' => $bookID, 'category_id' => $cateID]);
+        // $link = URL::createLink('frontend', 'index', 'quickView', ['id' => $bookID, 'category_id' => $cateID]);
+        // $xhtml = '<a href="javascript:quickView(\'' . $link .'\');" title="Quick View"><i class="ti-search" data-toggle="modal" data-target="#quick-view"></i></a>';
 
-        $xhtml = '<a href="javascript:quickView(\'' . $link .'\');" title="Quick View"><i class="ti-search" data-toggle="modal" data-target="#quick-view"></i></a>';
+        $xhtml = '<a href="javascript:quickView('.$id.')" title="Quick View"><i class="ti-search" data-toggle="modal" data-target="#quick-view"></i></a>';
         return $xhtml;
     }
 
