@@ -143,8 +143,6 @@ function quickView(id)
             let addToCartLink = `javascript:addToCart(${data.id}, ${data.price_sale})`;
             // let addToCartLink = `javascript:addToCart(${data.id})`;
             $('#quick-view .btn-add-to-cart').attr('href', addToCartLink);
-
-            // var buttonDetail = $('div.product-buttons #button-detail');
         }, 'json'
         // }
     );
@@ -153,31 +151,22 @@ function quickView(id)
 // function addToCart(id)
 function addToCart(id, price_sale)
 {
-    // $('input[name=quantity]').attr('data-price', price_sale);
-    // let price    = $('input[name=quantity]').data('price');
     let link = `${rootURL}index.php?module=${module}&controller=user&action=order&book_id=${id}&price=${price_sale}`;
-        // console.log('price '+price)
+    var addCart = $('li.mobile-cart div a');
     let quantity = $('input[name=quantity]').val();
-    console.log('quantity '+quantity)
-
     link += '&quantity=' + quantity;
-    console.log('link '+link)
+    // console.log('link '+link)
 
     $.get(link, function (data) {
         console.log('data '+data)
         $('#cart span').html(data);
+        showNotify(addCart, 'success-order', quantity);
     });
 
-    // var addCart = $('li.mobile-cart div a');
-    // $.get(link, function(data)
-    //     {
-    //         // console.log(data);
-    //         $('li.mobile-cart div a span').html(data);
-    //         showNotify(addCart, 'success-update');
-    //     }, 
-    //     'json'
-    // );
+    $('#quick-view').modal('hide');
+    $(".modal-backdrop").remove();
 
+    $('input[name=quantity]').val(1);
 };
 
 function moneyFormat(value) {
@@ -187,14 +176,21 @@ function moneyFormat(value) {
     }).format(value);
 }
 
-function showNotify($element, $type = 'success-update') {
-    switch ($type) {
+function showNotify(element, type = 'success-update', quantity=1) {
+    switch (type) {
         case 'success-update':
             $element.notify('Cập nhật thành công!', {
                 className: 'success',
                 position: 'top center',
             });
             break;
+        case 'success-order':
+            element.notify('Đã Thêm '+quantity+' Sản Phẩm Vào Giỏ Hàng!', {
+                className: 'success',
+                position: 'top center',
+            });
+            break;
+
     }
 }
 

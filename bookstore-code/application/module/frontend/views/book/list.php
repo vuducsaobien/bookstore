@@ -1,89 +1,30 @@
 <?php
-$module     = $this->arrParam['module'];
-$controller = $this->arrParam['controller'];
-$action     = $this->arrParam['action'];
-$imageURL   = $this->_dirImg;
-$arrParam   = $this->arrParam;
-
-// SELECT BOX
-$arrSortPrice = [
-    ['name'  => '- Sắp Xếp -'  , 'id' => 'default'],
-    ['name'  => 'Tăng Dần'     , 'id' => 'price_asc'],
-    ['name'  => 'Giảm Dần'     , 'id' => 'price_desc'],
-    ['name'  => 'Mới Nhất'     , 'id' => 'latest']
-];
-$slbSortPrice   = HTML::createSelectBox($arrSortPrice, 'sort', null, null, 'sort', null, $this->arrParam['filter_price']);
-
-// Pagination
-if($this->totalItems < $this->arrParam['pagination']['totalItemsPerPage']){
-    $paginationHTML = '';
-    $paginationFrontEnd = '';
-}elseif($this->totalItems > $this->arrParam['pagination']['totalItemsPerPage']){
-    $paginationHTML		= $this->pagination->showPaginationPublic(URL::createLink($module, $controller, $action));
-    $paginationFrontEnd = HTML_Frontend::createPaginationPublic($this->arrParam['pagination'], $this->totalItems);
-}
-
-// MESSAGE EMPTY DATABASE
-if(empty($this->booksCategory)){
-    $empty = '';
-}elseif($controller == 'list' && $action == 'list' && !isset($this->arrParam['category_id'])){
-    $empty = '';
-}
-
-if($this->totalItems == 0){
-    $empty = '
-        <div class="col-sm-12 text-center">
-            <h5 class="my-3 btn-success">Dữ Liệu Đang Cập Nhật !</h5>
-            <a href="'.$linkHome.'" class="btn btn-solid">Quay Lại Trang Chủ</a>
-        </div>
-    ';
-}
-
-$categoryList   = HTML_Frontend::listCategory($this->listCategories, $this->arrParam);
-
-// Books CATEGORY
-if(!empty($this->booksCategory)){
-    foreach($this->booksCategory as $item){
-        $categoryID     = $item['category_id'];
-        $linkCategory   = URL::createLink($module, $controller, $action);
-        $divStart       = '<div class="col-xl-3 col-6 col-grid-box">';
-        $divEnd         = '</div>';
-        $listBooksCategory   .= HTML_Frontend::showProductBox($item, true, false, true, $divStart, $divEnd, 'all');
+    require_once 'elements/list-items.php';
+    require_once PATH_BLOCK . 'quick-view.php';
+    // Books CATEGORY
+    if(!empty($this->booksCategory)){
+        foreach($this->booksCategory as $item){
+            $categoryID     = $item['category_id'];
+            $linkCategory   = URL::createLink($module, $controller, $action);
+            $divStart       = '<div class="col-xl-3 col-6 col-grid-box">';
+            $divEnd         = '</div>';
+            $listBooksCategory   .= HTML_Frontend::showProductBox($item, true, false, true, $divStart, $divEnd, 'all');
+        }
     }
-}
 
-// NOTICE 1
-// All Books ACTIVE
-$totalItems = $this->totalItems;
-$title = 'tất cả sách';
-if(!empty($this->arrParam['search'])){
-    $searchValue = $this->arrParam['search'];
-    $title = "tìm kiếm cho '$searchValue': $totalItems kết quả.";
-}else{
-    $searchValue = '';
-}
+    // Books ACTIVE
+    if(!empty($this->booksActive)){
+        foreach($this->booksActive as $item){
+            $divStart       = '<div class="col-xl-3 col-6 col-grid-box">';
+            $divEnd         = '</div>';
+            $listBooksActive   .= HTML_Frontend::showProductBox($item, true, false, true, $divStart, $divEnd, 'all', $searchValue);
+        }
+    }
 
-// Title SORT
-if($arrParam['sort'] == 'price_asc'){
-    $title = 'giá sách tăng dần';
+    // Books SPECIAL
+    $booksSpecial = HTML_Frontend::createSlide($this->booksSpecial, 4);
+    $categoryList   = HTML_Frontend::listCategory($this->listCategories, $arrParam);
 
-    }elseif($arrParam['sort'] == 'price_desc'){
-        $title = 'giá sách giảm dần';
-
-    }elseif($arrParam['sort'] == 'latest'){
-        $title = 'sách mới nhất';
-}
-
-if(!empty($this->booksActive)){
-	foreach($this->booksActive as $item){
-        $divStart       = '<div class="col-xl-3 col-6 col-grid-box">';
-        $divEnd         = '</div>';
-        $listBooksActive   .= HTML_Frontend::showProductBox($item, true, false, true, $divStart, $divEnd, 'all', $searchValue);
-	}
-}
-
-// Books SPECIAL
-$booksSpecial = HTML_Frontend::createSlide($this->booksSpecial, 4);
 ?>
 
 <!-- CONTENT -->

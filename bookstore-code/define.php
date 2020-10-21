@@ -57,8 +57,8 @@
 
 	// ====================== ELSE ===========================
 
-	define('URL_FRIENDLY',       true);
-	// define('URL_FRIENDLY',       false);
+	// define('URL_FRIENDLY',       true);
+	define('URL_FRIENDLY',       false);
 
 	define('ITEM_PER_PAGE',       5);
 	define('PAGE_RANGE',       3);

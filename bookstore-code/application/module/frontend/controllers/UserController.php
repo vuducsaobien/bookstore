@@ -111,24 +111,22 @@ class UserController extends Controller
 		// print_r($cart);
 		// echo '</pre>';
 
-		if(empty($cart)){
-			$cart['quantity'][$bookID]	= 1;
-			$cart['price'][$bookID]		= $price;
+		// Shortcut
+		// if(empty($cart)){
+		if(!$cart){
+			$cart['quantity'][$bookID]	= $quantity;
+			$cart['price'][$bookID]		= $price * $cart['quantity'][$bookID];
 
 		}else{
 			if(key_exists($bookID, $cart['quantity'])){
-				$cart['quantity'][$bookID]	+= 1;
+				$cart['quantity'][$bookID]	+= $quantity;
 				$cart['price'][$bookID]		= $price * $cart['quantity'][$bookID];
 			}else{
-				$cart['quantity'][$bookID]	= 1;
-				$cart['price'][$bookID]		= $price;
+				$cart['quantity'][$bookID]	= $quantity;
+				$cart['price'][$bookID]		= $price * $quantity;
 			}
 		}
 		Session::set('cart', $cart);
-		// Session::delete('cart', $cart);
-
-
-		// URL::redirect($this->_moduleName, 'book', 'index', ['book_id' => $bookID]);
 		echo json_encode(array_sum($cart['quantity']));
 	}
 

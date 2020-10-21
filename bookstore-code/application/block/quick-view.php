@@ -37,7 +37,7 @@
 
                                         </span>
 
-                                        <input type="text" name="quantity" class="form-control input-number" value="1" data-price="">
+                                        <input type="text" name="quantity" class="form-control input-number" value="1">
 
                                         <span class="input-group-prepend">
                                             <button type="button" class="btn quantity-right-plus" data-type="plus" data-field="">
