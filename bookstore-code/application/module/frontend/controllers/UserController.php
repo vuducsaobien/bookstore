@@ -89,14 +89,32 @@ class UserController extends Controller
 
 	}
 
+	public function cartAction(){
+		$title = 'Giỏ Hàng';
+		$this->_view->Items		= $this->_model->listItems($this->_arrParam, ['task' => 'books-in-cart']);
+
+		$this->_view->setTitle($title);
+		$this->_view->render('user/cart');
+	}
+
 	public function orderAction(){
 		$cart	= Session::get('cart');
 		$bookID	= $this->_arrParam['book_id'];
 		$price	= $this->_arrParam['price'];
+		$quantity = $this->_arrParam['quantity'];
 		
+		// echo '<pre>$this->_arrParam ';
+		// print_r($this->_arrParam);
+		// echo '</pre>';
+
+		// echo '<pre>$cart ';
+		// print_r($cart);
+		// echo '</pre>';
+
 		if(empty($cart)){
 			$cart['quantity'][$bookID]	= 1;
 			$cart['price'][$bookID]		= $price;
+
 		}else{
 			if(key_exists($bookID, $cart['quantity'])){
 				$cart['quantity'][$bookID]	+= 1;
@@ -107,18 +125,13 @@ class UserController extends Controller
 			}
 		}
 		Session::set('cart', $cart);
+		// Session::delete('cart', $cart);
+
 
 		// URL::redirect($this->_moduleName, 'book', 'index', ['book_id' => $bookID]);
 		echo json_encode(array_sum($cart['quantity']));
 	}
 
-	public function cartAction(){
-		$title = 'Giỏ Hàng';
-		$this->_view->Items		= $this->_model->listItems($this->_arrParam, ['task' => 'books-in-cart']);
-
-		$this->_view->setTitle($title);
-		$this->_view->render('user/cart');
-	}
 
 
 

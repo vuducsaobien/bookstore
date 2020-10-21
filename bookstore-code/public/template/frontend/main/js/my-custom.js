@@ -130,31 +130,62 @@ function quickView(id)
     $.get(link, function(data)
         {
             // console.log(data)
-            let originalPrice = data.price;
-            let salePrice = data.sale_price;
+            let originalPrice = moneyFormat(data.price);
+            let salePrice = moneyFormat(data.price_sale);
             let xhtmlPrice = data.sale_off == 0 ? originalPrice : `${salePrice} <del>${originalPrice}</del>`;
             $('#quick-view .book-price').html(xhtmlPrice);
+
             $('h2.book-name').html(data.name)
             $('div.book-description').html(data.short_description)
             $('img.book-picture').attr('src', data.src_picture)
             $('.btn-view-book-detail').attr('href', data.link)
+
+            let addToCartLink = `javascript:addToCart(${data.id}, ${data.price_sale})`;
+            // let addToCartLink = `javascript:addToCart(${data.id})`;
+            $('#quick-view .btn-add-to-cart').attr('href', addToCartLink);
+
             // var buttonDetail = $('div.product-buttons #button-detail');
         }, 'json'
+        // }
     );
 };
 
-function addToCart(link)
+// function addToCart(id)
+function addToCart(id, price_sale)
 {
-    var addCart = $('li.mobile-cart div a');
-    $.get(link, function(data)
-        {
-            // console.log(data);
-            $('li.mobile-cart div a span').html(data);
-            showNotify(addCart, 'success-update');
-        }, 
-        'json'
-    );
+    // $('input[name=quantity]').attr('data-price', price_sale);
+    // let price    = $('input[name=quantity]').data('price');
+    let link = `${rootURL}index.php?module=${module}&controller=user&action=order&book_id=${id}&price=${price_sale}`;
+        // console.log('price '+price)
+    let quantity = $('input[name=quantity]').val();
+    console.log('quantity '+quantity)
+
+    link += '&quantity=' + quantity;
+    console.log('link '+link)
+
+    $.get(link, function (data) {
+        console.log('data '+data)
+        $('#cart span').html(data);
+    });
+
+    // var addCart = $('li.mobile-cart div a');
+    // $.get(link, function(data)
+    //     {
+    //         // console.log(data);
+    //         $('li.mobile-cart div a span').html(data);
+    //         showNotify(addCart, 'success-update');
+    //     }, 
+    //     'json'
+    // );
+
 };
+
+function moneyFormat(value) {
+    return new Intl.NumberFormat('vi-VI', {
+        style: 'currency',
+        currency: 'VND',
+    }).format(value);
+}
 
 function showNotify($element, $type = 'success-update') {
     switch ($type) {

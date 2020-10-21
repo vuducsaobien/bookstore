@@ -39,7 +39,7 @@ class HTML_Frontend
                     '.self::showSaleOffLabel($product['sale_off']).'
                     '.self::showProductImage($link, $srcPicture, $product['name'], $classImage,  true, $divStartImage, $divEndImage).'
                     <div class="cart-info cart-wrap">
-                        '.self::showBtnAddToCartProductBox($bookID).'
+                        '.self::showBtnAddToCartProductBox($bookID, $priceOrder).'
                         '.self::showBtnQuickView($bookID).'
                     </div>
                 </div>
@@ -66,10 +66,10 @@ class HTML_Frontend
         return $xhtml;
     }
 
-    public static function showBtnAddToCartProductBox($id)
+    public static function showBtnAddToCartProductBox($id, $priceOrder)
     {
         // $xhtml = '<a href="javascript:addToCart(\'' . $bookID . '\');" title="Add to cart"><i class="ti-shopping-cart"></i></a>';
-        $xhtml = '<a href="javascript:addToCart('.$id.')" title="Add to cart"><i class="ti-shopping-cart"></i></a>';
+        $xhtml = '<a href="javascript:addToCart('.$id.','.$priceOrder.')" title="Add to cart"><i class="ti-shopping-cart"></i></a>';
         // $xhtml = '<a href="javascript:quickViewBook(' . $id . ')" title="Quick View"><i class="ti-search" aria-hidden="true"></i></a>';
 
         return $xhtml;
@@ -223,7 +223,7 @@ class HTML_Frontend
         return $xhtml;
     }
 
-    public static function moneyFormat($value=null, $options=null, $price=null, $percent=null)
+    public static function moneyFormat($value=null, $options=null, $price=null, $sale_off=null)
     {
         if($options==null) {
             $result = number_format($value, 0, ',', '.') .' '. MONEY_VALUE;
@@ -232,11 +232,11 @@ class HTML_Frontend
             $result = $value .'%';
 
         }elseif($options=='price_sale'){
-            $result = $price*(100-$percent)/100;
+            $result = $price*(100-$sale_off)/100;
             $result = number_format($result, 0, ',', '.') . MONEY_VALUE;
 
         }elseif($options=='price_order'){
-            $result = $price*(100-$percent)/100;
+            $result = $price*(100-$sale_off)/100;
         }
         return $result;
     }

@@ -11,6 +11,7 @@ function __autoload($clasName)
 }
 Session::init();
 // Session::delete('user');
+// Session::delete('cart', $cart);
 $bootstrap = new Bootstrap();
 $bootstrap->init();
 
