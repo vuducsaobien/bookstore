@@ -139,7 +139,6 @@ class Helper
 		return $result;
 	}
 
-
 	// Create Title sort
 	public static function cmsLinkSort($name, $column, $columnPost, $orderPost, $typeASC='asc')
 	{

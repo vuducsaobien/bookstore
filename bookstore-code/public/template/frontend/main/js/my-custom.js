@@ -112,50 +112,48 @@ $(document).ready(function () {
         $('#sort-form').submit();
     });
 
-
     setTimeout(function () {
         $('#frontend-message').toggle('slow');
     }, 4000);
 });
 
-function getUrlParam(key) {
-    let searchParams = new URLSearchParams(window.location.search);
-    return searchParams.get(key);
-}
-
 // DUC
 function quickView(id)
 {
-    var link = rootURL + `index.php?module=${module}&controller=book&action=quickView&book_id=` + id;
+    var link = rootURL + `index.php?module=${module}&controller=book&action=quickView&book_id=`+id;
     $.get(link, function(data)
         {
             // console.log(data)
+            // console.log(data.id)
             let originalPrice = moneyFormat(data.price);
             let salePrice = moneyFormat(data.price_sale);
             let xhtmlPrice = data.sale_off == 0 ? originalPrice : `${salePrice} <del>${originalPrice}</del>`;
-            $('#quick-view .book-price').html(xhtmlPrice);
 
+            $('#quick-view .book-price').html(xhtmlPrice);
             $('h2.book-name').html(data.name)
             $('div.book-description').html(data.short_description)
             $('img.book-picture').attr('src', data.src_picture)
             $('.btn-view-book-detail').attr('href', data.link)
 
-            let addToCartLink = `javascript:addToCart(${data.id}, ${data.price_sale})`;
-            // let addToCartLink = `javascript:addToCart(${data.id})`;
+            let addToCartLink = `javascript:addToCart(${data.id})`;
             $('#quick-view .btn-add-to-cart').attr('href', addToCartLink);
         }, 'json'
         // }
     );
 };
 
-// function addToCart(id)
-function addToCart(id, price_sale)
+function addToCart(id)
 {
-    let link = `${rootURL}index.php?module=${module}&controller=user&action=order&book_id=${id}&price=${price_sale}`;
+    // console.log('id '+id)
+    // console.log('price_sale '+price_sale)
+
+    let link = `${rootURL}index.php?module=${module}&controller=user&action=order&book_id=${id}`;
+    // console.log('link '+link)
+
     var addCart = $('li.mobile-cart div a');
     let quantity = $('input[name=quantity]').val();
     link += '&quantity=' + quantity;
-    // console.log('link '+link)
+    console.log('link '+link)
 
     $.get(link, function (data) {
         console.log('data '+data)
@@ -174,6 +172,11 @@ function moneyFormat(value) {
         style: 'currency',
         currency: 'VND',
     }).format(value);
+}
+
+function getUrlParam(key) {
+    let searchParams = new URLSearchParams(window.location.search);
+    return searchParams.get(key);
 }
 
 function showNotify(element, type = 'success-update', quantity=1) {

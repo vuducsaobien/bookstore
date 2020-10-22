@@ -86,7 +86,6 @@ class UserController extends Controller
 		$result = $this->_model->ajaxQuantities($this->_arrParam);
 		echo json_encode($result);
 		URL::redirect($this->_moduleName, 'user', 'cart');
-
 	}
 
 	public function cartAction(){
@@ -100,9 +99,12 @@ class UserController extends Controller
 	public function orderAction(){
 		$cart	= Session::get('cart');
 		$bookID	= $this->_arrParam['book_id'];
-		$price	= $this->_arrParam['price'];
+		// $price	= $this->_arrParam['price'];
 		$quantity = $this->_arrParam['quantity'];
 		
+		$bookInfo = $this->_model->infoItems($this->_arrParam, ['task' => 'order-book']);
+		$price = HTML_Frontend::moneyFormat(null, 'price_order', $bookInfo['price'], $bookInfo['sale_off']);
+
 		// echo '<pre>$this->_arrParam ';
 		// print_r($this->_arrParam);
 		// echo '</pre>';

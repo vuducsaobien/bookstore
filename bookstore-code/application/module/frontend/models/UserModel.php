@@ -49,7 +49,6 @@ class UserModel extends Model
 
 		if($options == null) {
 			$password	= md5($arrForm['password']);
-
 			$query[]	= "SELECT `u`.`id`, `u`.`fullname`, `u`.`status`, `u`.`password`, `u`.`phone`, `u`.`address`,
 			`u`.`email`, `u`.`username`, `u`.`group_id`, `g`.`group_acp`";
 			$query[]	= "FROM `".TBL_USER."` AS `u` LEFT JOIN `".TBL_GROUP."` AS g ON `u`.`group_id` = `g`.`id`";
@@ -58,14 +57,19 @@ class UserModel extends Model
 
 		if($options['task'] == 'change-user-info') {
 			$query[]	= "SELECT `u`.`id`, `u`.`fullname`, `u`.`phone`, `u`.`address`, `u`.`email`, `u`.`username` ";
-
 			$query[]	= "FROM `".TBL_USER."` AS `u`";
 			$query[]	= "WHERE `u`.`email` = '$email' ";
 		}
 
-			$query		= implode(" ", $query);
-			$result		= $this->fetchRow($query);
-			return $result;
+		if($options['task'] == 'order-book') {
+			$query[]	= "SELECT `sale_off`, `price` ";
+			$query[]	= "FROM `".TBL_BOOK."` ";
+			$query[]	= "WHERE `id` = {$arrParam['book_id']}";
+		}
+
+		$query		= implode(" ", $query);
+		$result		= $this->fetchRow($query);
+		return $result;
 	}
 
 	public function deleteItems($arrParam, $options = null){

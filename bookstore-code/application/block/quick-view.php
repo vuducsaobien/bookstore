@@ -53,6 +53,7 @@
                                 <a href="" class="btn btn-solid mb-1 btn-add-to-cart">Chọn Mua</a>
                                 <a id="button-detail" href="#" class="btn btn-solid mb-1 btn-view-book-detail">Xem chi tiết</a>
                             </div>
+                            
                         </div>
                     </div>
                 </div>

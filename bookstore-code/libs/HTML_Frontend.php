@@ -28,7 +28,6 @@ class HTML_Frontend
         $srcPicture         = self::getSrcPicture($product['picture'], TBL_BOOK);
 
         $priceOrder         = self::moneyFormat(null, 'price_order', $product['price'], $product['sale_off']);
-        // $addToCartLink      = URL::createLink('frontend', 'user', 'order', ['book_id' => $bookID, 'price' => $priceOrder]);
         
         $resultName     = Helper::highLightPublic($searchValue, $product['name']);
         $productName        = $showName ? self::showProductName($link, $resultName) : '';
@@ -39,7 +38,7 @@ class HTML_Frontend
                     '.self::showSaleOffLabel($product['sale_off']).'
                     '.self::showProductImage($link, $srcPicture, $product['name'], $classImage,  true, $divStartImage, $divEndImage).'
                     <div class="cart-info cart-wrap">
-                        '.self::showBtnAddToCartProductBox($bookID, $priceOrder).'
+                        '.self::showBtnAddToCartProductBox($bookID).'
                         '.self::showBtnQuickView($bookID).'
                     </div>
                 </div>
@@ -66,10 +65,10 @@ class HTML_Frontend
         return $xhtml;
     }
 
-    public static function showBtnAddToCartProductBox($id, $priceOrder)
+    public static function showBtnAddToCartProductBox($id)
     {
         // $xhtml = '<a href="javascript:addToCart(\'' . $bookID . '\');" title="Add to cart"><i class="ti-shopping-cart"></i></a>';
-        $xhtml = '<a href="javascript:addToCart('.$id.','.$priceOrder.')" title="Add to cart"><i class="ti-shopping-cart"></i></a>';
+        $xhtml = '<a href="javascript:addToCart('.$id.')" title="Add to cart"><i class="ti-shopping-cart"></i></a>';
         // $xhtml = '<a href="javascript:quickViewBook(' . $id . ')" title="Quick View"><i class="ti-search" aria-hidden="true"></i></a>';
 
         return $xhtml;

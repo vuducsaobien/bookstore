@@ -1,24 +1,28 @@
 <?php
-// Info This Book_ID
-$bookInfo           = $this->bookInfo;
-$description        = $bookInfo['description'];
-$shortDescription   = $bookInfo['short_description'];
-$bookName           = $bookInfo['name'];
-$picture            = HTML_Frontend::getSrcPicture($bookInfo['picture'], TBL_BOOK);
-$price              = HTML_Frontend::moneyFormat($bookInfo['price'], null);
-$saleOff            = HTML_Frontend::moneyFormat($bookInfo['sale_off'], 'sale_off');
-$priceSale          = HTML_Frontend::moneyFormat(null, 'price_sale', $bookInfo['price'], $bookInfo['sale_off']);
-if($bookInfo['sale_off'] > 0){
-    $priceHTML = '
-        <h4><del>'.$price.'</del><span> -'.$saleOff.'</span></h4>
-        <h3>'.$priceSale.'</h3>
-    ';
-}else{
-    $priceHTML = '<h3>'.$priceSale.'</h3>';
-}
+    // Info This Book_ID
+    $bookInfo           = $this->bookInfo;
+    $bookID = $bookInfo['id'];
+    $description        = $bookInfo['description'];
+    $shortDescription   = $bookInfo['short_description'];
+    $bookName           = $bookInfo['name'];
+    $picture            = HTML_Frontend::getSrcPicture($bookInfo['picture'], TBL_BOOK);
+    $price              = HTML_Frontend::moneyFormat($bookInfo['price'], null);
+    $saleOff            = HTML_Frontend::moneyFormat($bookInfo['sale_off'], 'sale_off');
+    $priceSale          = HTML_Frontend::moneyFormat(null, 'price_sale', $bookInfo['price'], $bookInfo['sale_off']);
+    $priceOrder         = HTML_Frontend::moneyFormat(null, 'price_order', $bookInfo['price'], $bookInfo['sale_off']);
 
-$priceOrder         = HTML_Frontend::moneyFormat(null, 'price_order', $bookInfo['price'], $bookInfo['sale_off']);
-$addToCartLink      = URL::createLink('frontend', 'user', 'order', ['book_id' => $bookInfo['id'], 'price' => $priceOrder]);
+    $linkAddToCart  = 'javascript:addToCart(' . $bookID . ')';
+
+    $priceSaleOrder     = HTML_Frontend::moneyFormat(null, 'price_order', $bookInfo['price'], $bookInfo['sale_off']);
+    if($bookInfo['sale_off'] > 0){
+        $priceHTML = '
+            <h4><del>'.$price.'</del><span> -'.$saleOff.'</span></h4>
+            <h3>'.$priceSale.'</h3>
+        ';
+    }else{
+        $priceHTML = '<h3>'.$priceSale.'</h3>';
+    }
+
 ?>
 
 <div class="col-lg-9 col-sm-12 col-xs-12">
@@ -62,10 +66,12 @@ $addToCartLink      = URL::createLink('frontend', 'user', 'order', ['book_id' =>
 
                     </div>
                 </div>
+
                 <div class="product-buttons">
-                    <a href="<?php echo $addToCartLink;?>" class="btn btn-solid ml-0"><i class="fa fa-cart-plus"></i> Chọn mua</a>
-                </div>
+                    <a href="<?php echo $linkAddToCart ;?>" class="btn btn-solid btn-add-to-cart ml-0"><i class="fa fa-cart-plus"></i> Chọn mua</a>
+                    </div>
                 <div class="border-product"><?php echo $shortDescription ;?></div>
+
             </div>
         </div>
     </div>
