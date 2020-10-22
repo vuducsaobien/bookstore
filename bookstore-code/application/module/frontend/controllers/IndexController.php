@@ -29,9 +29,12 @@ class IndexController extends Controller{
 		$title = 'Đăng Nhập | BookStore';
 		$userInfo	= Session::get('user');
 
-		if( $userInfo['login'] == true && time() <= $userInfo['time'] + TIME_LOGIN ){
+		// if( $userInfo['login'] == true && time() <= $userInfo['time'] + TIME_LOGIN ){
+		if( $userInfo['login'] == true && $userInfo['time'] + TIME_LOGIN >= time()){
+			Session::delete('cart');
 			URL::redirect('frontend', 'user', 'index');
 		}
+
 
 		if ($this->_arrParam['form']['token'] > 0) {
 
@@ -89,6 +92,7 @@ class IndexController extends Controller{
 		$title = 'Đăng Ký | BookStore';
 		$userInfo	= Session::get('user');
 		if( $userInfo['login'] == true && $userInfo['time'] + TIME_LOGIN >= time() ){
+
 			URL::redirect($this->_moduleName, 'user', 'index');
 		}
 

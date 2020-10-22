@@ -82,12 +82,6 @@ class UserController extends Controller
 		URL::redirect($this->_moduleName, 'user', 'cart');
 	}
 
-	public function ajaxQuantitiesCartAction(){
-		$result = $this->_model->ajaxQuantities($this->_arrParam);
-		echo json_encode($result);
-		URL::redirect($this->_moduleName, 'user', 'cart');
-	}
-
 	public function cartAction(){
 		$title = 'Giỏ Hàng';
 		$this->_view->Items		= $this->_model->listItems($this->_arrParam, ['task' => 'books-in-cart']);
@@ -96,22 +90,49 @@ class UserController extends Controller
 		$this->_view->render('user/cart');
 	}
 
+
+	public function ajaxQuantityCartAction(){
+		$cart	= Session::get('cart');
+		$bookID = $this->_arrParam['id'];
+		$quantity = $this->_arrParam['quantity'];
+
+		// echo '<pre>$cart[] ';
+		// print_r($cart['quantity']);
+		// echo '</pre>';
+
+		// echo'<pre>$this->_arrParam[quantity] ';
+		// print_r($this->_arrParam['quantity']);
+		// echo '</pre>';
+
+		$oldCart = array_sum($cart['quantity']);
+		// echo $oldCart = array_sum($cart['quantity']);
+		// echo '<br>';
+
+		if(key_exists($bookID, $cart['quantity'])){
+			$cart['quantity'][$bookID]	= $quantity;
+			Session::set('cart', $cart);
+
+			$arrSum = array_sum($cart['quantity']);
+			// echo json_encode($arrSum);
+
+			// $test = '5';
+			$resultArr = [
+				'new_cart' => $arrSum,
+				'old_cart' => $oldCart
+			];
+			echo json_encode($resultArr);
+
+
+		}
+	}
+
 	public function orderAction(){
 		$cart	= Session::get('cart');
 		$bookID	= $this->_arrParam['book_id'];
-		// $price	= $this->_arrParam['price'];
 		$quantity = $this->_arrParam['quantity'];
 		
 		$bookInfo = $this->_model->infoItems($this->_arrParam, ['task' => 'order-book']);
 		$price = HTML_Frontend::moneyFormat(null, 'price_order', $bookInfo['price'], $bookInfo['sale_off']);
-
-		// echo '<pre>$this->_arrParam ';
-		// print_r($this->_arrParam);
-		// echo '</pre>';
-
-		// echo '<pre>$cart ';
-		// print_r($cart);
-		// echo '</pre>';
 
 		// Shortcut
 		// if(empty($cart)){

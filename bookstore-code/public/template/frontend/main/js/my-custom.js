@@ -1,64 +1,21 @@
 $(document).ready(function () {
-    // activeMenu();
-
-// DUC
     var searchParams = new URLSearchParams(window.location.search);
     var moduleName = searchParams.get('module');
     var controllerName = searchParams.get('controller');
     
     // Prevent delete button
 	$('.btn-delete-item').click(function (e) {
+
         var btnDelete = $('.btn-delete-item a')
         e.preventDefault();
 
-	   if (confirm("Bạn có muốn xóa phần tử này không ??")) {
-        link = btnDelete.attr('href');
-
-           console.log(link)
-		   window.location.assign(link);
-	   }
+	    if (confirm("Bạn có muốn xóa phần tử này không ??")) {
+            link = btnDelete.attr('href');
+            console.log(link)
+		    window.location.assign(link);
+        }
+       
     });
-    // $('.input-number').change(function (e) {
-        // input = $(this)
-        // id = input.data('id')
-        // console.log(id)
-
-        // let num=input.val();
-        // console.log(num)
-
-        // inputhidden = '#input_quantity_'+id;
-        // console.log(inputhidden)
-
-        // $(inputhidden).val(num);
-        // priceAfter = $('h2.price-book'+id).html();
-        // alert(priceAfter);
-    // });
-
-    // Change input cart number order
-    $('.input-change-quantities').change(function () {
-        $inputChange = $(this);
-        let quantities = $(this).val();
-        let id = $(this).data('id');
-        // let url = rootURL + `index.php?module=${moduleName}&controller=${controllerName}&action=ajaxQuantitiesCart&id=${id}&quantities=${quantities}`;
-        let url = `index.php?module=${moduleName}&controller=${controllerName}&action=ajaxQuantitiesCart&id=${id}&quantities=${quantities}`;
-        console.log(url)
-
-        // $('.changeQuantity').attr('href', url)
-
-
-        $.get(url, function (data) {
-            console.log(data);
-            // $('.modified-' + data.id).html(data.modified);
-            // $inputChange.notify('Cập nhật thành công!', {
-            //     className: 'success',
-            //     position: 'top center',
-            // });
-        });
-
-    });
-
-
-// DUC
 
     $('.breadcrumb-section').css('margin-top', $('.my-header').height() + 'px');
     $('.my-home-slider').css('margin-top', $('.my-header').height() + 'px');
@@ -115,9 +72,71 @@ $(document).ready(function () {
     setTimeout(function () {
         $('#frontend-message').toggle('slow');
     }, 4000);
+    
+    // Get old - current value before change event <input>
+        $(document).on('focusin', '.input-change-quantities', function(){
+            console.log("Saving value " + $(this).val());
+            $(this).data('val', $(this).val());
+        }).on('change','.input-change-quantities', function(){
+            var prev = $(this).data('val');
+            var current = $(this).val();
+            console.log("Prev value " + prev);
+            console.log("New value " + current);
+        });
+
+        // var previous_value;
+        // $(".selectpicker").on('shown.bs.select', function(e) {
+        //         previous_value = $(this).val();
+        // }).change(function() {
+        //     alert(previous_value);
+        //     previous_value = $(this).val();
+        // });
+    // Get old - current value before change event <input>
+
+    // Change input cart number order
+    $('.input-change-quantities').change(function () {
+        $inputChange = $(this);
+        let quantity = $(this).val();
+        let id = $(this).data('id');
+        let url = `index.php?module=${moduleName}&controller=${controllerName}&action=ajaxquantityCart&id=${id}&quantity=${quantity}`;
+        // console.log('id '+id)
+        // console.log('quantity '+quantity)
+        // console.log('url '+url)
+
+        // $.get(url, function (data) {
+        //     console.log('data ' +data);
+        //     $('span.badge-warning').html(data);
+        //     $('.modified-' + data.id).html(data.modified);
+        //     $inputChange.notify('Cập nhật thành công!', {
+        //         className: 'success',
+        //         position: 'top center',
+        //     });
+        // });
+
+
+        $.getJSON(url, function (data) {            
+            console.log('data new_cart ' +data.new_cart)
+            console.log('data old_cart ' +data.old_cart)
+            quantityChange = data.new_cart - data.old_cart
+            console.log('quantityChange ' +quantityChange)
+
+            $('span.badge-warning').html(data.new_cart);
+            $('.modified-' + data.id).html(data.modified);
+            $inputChange.notify('Cập nhật thành công!', {
+                className: 'success',
+                position: 'top center',
+            });
+
+            var addCart = $('li.mobile-cart div a');
+            showNotify(addCart, 'success-order', quantityChange);
+
+        });
+
+
+    });
+    
 });
 
-// DUC
 function quickView(id)
 {
     var link = rootURL + `index.php?module=${module}&controller=book&action=quickView&book_id=`+id;

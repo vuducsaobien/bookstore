@@ -200,26 +200,5 @@ class UserModel extends Model
 		return $result;
 	}
 
-	public function ajaxQuantities($arrParam, $options = null)
-    {
-		if($options == null){
-
-			$id 	  		= $arrParam['id'];
-			$stateName 		= 'ordering';
-			$state			= $arrParam['ordering'];
-			$modified 	  	= $this->modified;
-			$modified_by 	= $this->modified_by;
-
-			$query  = "UPDATE `$this->table` SET `$stateName` = '$state', `modified` = '$modified', `modified_by` = '$modified_by' WHERE `id` = $id";
-			
-			$this->query($query);
-			return [
-			    'id' 	   	=> $id,
-				'modified'  => HTML::showItemHistory($modified_by, $modified),
-				'link'      => URL::createLink($arrParam['module'], $arrParam['controller'], 'ajaxQuantitiesCart', ['id' => $id, "$stateName" => $state])
-			];
-		}
-	}
-
 
 }

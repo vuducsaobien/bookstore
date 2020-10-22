@@ -43,12 +43,14 @@ if(!empty($this->Items)){
 		$inputName		= Helper::cmsInput('hidden', 'form[name][]', "input_name_'.$bookID.'", null, $value['name']);
 		$inputPicture	= Helper::cmsInput('hidden', 'form[picture][]', "input_picture_'.$bookID.'", null, $value['picture']);
 
+		$inputs = $inputBookID . $inputPrice . $inputQuantity . $inputName . $inputPicture ;
+
 		$linkDelete		= URL::createLink($module, $controller, 'delete', ['id' => $bookID]);
 		$linkChangeQuantity		= URL::createLink($module, $controller, 'ajaxQuantitiesCart', ['id' => $bookID]);
 
 		$xhtmlOrder .= '
 			<tr>
-				<td class="btn-delete-item"><h5>'.$i.'</h5></td>
+				<td class=""><h5>'.$i.'</h5></td>
 				<td class="btn-delete-item"><a href="'.$linkDelete.'" class="icon"><i class="ti-close"></i></a></td>
 				<td>'.$image.'</td>
 
@@ -75,15 +77,17 @@ if(!empty($this->Items)){
 				
 				<td><h2 class="td-color text-lowercase">'.$totalPriceBook.'</h2></td>
 			</tr>
-			'. $inputBookID . $inputPrice . $inputQuantity . $inputName . $inputPicture.'
+			'. $inputs . '
 		';
 	}
 ?>
+
 <form action="<?php echo $linkSubimtForm;?>" method="POST" name="admin-form" id="admin-form">
 	<section class="cart-section section-b-space">
 		<div class="container">
 			<div class="row">
 				<div class="col-sm-12">
+
 					<table class="table cart-table table-responsive-xs">
 						<thead>
 							<tr class="table-head">
@@ -98,6 +102,7 @@ if(!empty($this->Items)){
 						</thead>
 
 						<tbody><?php echo $xhtmlOrder ;?></tbody>
+
 					</table>
 
 					<table class="table cart-table table-responsive-md">

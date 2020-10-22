@@ -32,9 +32,7 @@ class Bootstrap{
 			$userObj	= Session::get('user');
 			$userInfo	= $userObj['info'];
 
-			// $requestURL = "$module-$controller-$action";
 			$logged		= ($userObj['login'] == true && $userObj['time'] + TIME_LOGIN >= time());
-			// $logged     = (($userObj['login'] ?? false) == true && $userObj['time'] + TIME_LOGIN >= time());
 
 			// MODULE BACKEND ADMIN
 			if ($module == 'backend'){

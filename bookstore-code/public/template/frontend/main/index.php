@@ -9,7 +9,6 @@
     <link rel="shortcut icon" href="<?php echo $imageURL;?>/favicon.png" type="image/x-icon">
     <link rel="stylesheet"    href="https://fonts.googleapis.com/css?family=Roboto:300,400,700,900">
     <?= $this->_cssFiles;?>
-    <?= $this->_jsFiles; ?>
 </head>
 
 <body>
