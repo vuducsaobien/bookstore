@@ -90,39 +90,49 @@ class UserController extends Controller
 		$this->_view->render('user/cart');
 	}
 
-
 	public function ajaxQuantityCartAction(){
 		$cart	= Session::get('cart');
 		$bookID = $this->_arrParam['id'];
 		$quantity = $this->_arrParam['quantity'];
 
-		// echo '<pre>$cart[] ';
-		// print_r($cart['quantity']);
-		// echo '</pre>';
-
-		// echo'<pre>$this->_arrParam[quantity] ';
-		// print_r($this->_arrParam['quantity']);
+		// echo '<pre>$cart BEFORE ';
+		// print_r($cart);
 		// echo '</pre>';
 
 		$oldCart = array_sum($cart['quantity']);
-		// echo $oldCart = array_sum($cart['quantity']);
-		// echo '<br>';
 
 		if(key_exists($bookID, $cart['quantity'])){
 			$cart['quantity'][$bookID]	= $quantity;
 			Session::set('cart', $cart);
 
-			$arrSum = array_sum($cart['quantity']);
-			// echo json_encode($arrSum);
+			echo '<pre>$cart AFTER ';
+			print_r($cart);
+			echo '</pre>';
 
-			// $test = '5';
+			// $totalPrice = [];
+			// $totalPrice = 0;
+			// foreach($cart as $key => $value){
+				// foreach($value as $valueTwo){
+				// }
+				// $totalPrice = ;
+			// }
+
+			// $new_arr = array_map(function ($e) {
+            //     return $e['quantity'];
+			// }, $cart);
+			
+			// echo '<pre>$new_arr ';
+			// print_r($new_arr);
+			// echo '</pre>';
+
+			$arrSum = array_sum($cart['quantity']);
 			$resultArr = [
 				'new_cart' => $arrSum,
-				'old_cart' => $oldCart
+				'old_cart' => $oldCart,
+				'price_sale' => $cart['price'][$bookID]
+				// 'total_price' =>
 			];
 			echo json_encode($resultArr);
-
-
 		}
 	}
 
@@ -134,19 +144,29 @@ class UserController extends Controller
 		$bookInfo = $this->_model->infoItems($this->_arrParam, ['task' => 'order-book']);
 		$price = HTML_Frontend::moneyFormat(null, 'price_order', $bookInfo['price'], $bookInfo['sale_off']);
 
+		// 	echo '<pre>$bookInfo ';
+		// print_r($bookInfo);
+		// echo '</pre>';
+		// die('<h3>Die is Called</h3>');
+
 		// Shortcut
 		// if(empty($cart)){
 		if(!$cart){
 			$cart['quantity'][$bookID]	= $quantity;
-			$cart['price'][$bookID]		= $price * $cart['quantity'][$bookID];
+			$cart['price'][$bookID]		= $price ;
+			// $cart['total_price'][$bookID] = $price * $cart['quantity'][$bookID];
+			// $cart['price'][$bookID]		= $price * $cart['quantity'][$bookID];
 
 		}else{
 			if(key_exists($bookID, $cart['quantity'])){
 				$cart['quantity'][$bookID]	+= $quantity;
-				$cart['price'][$bookID]		= $price * $cart['quantity'][$bookID];
+				$cart['price'][$bookID]		= $price ;
+				// $cart['price'][$bookID]		= $price * $cart['quantity'][$bookID];
+
 			}else{
 				$cart['quantity'][$bookID]	= $quantity;
-				$cart['price'][$bookID]		= $price * $quantity;
+				$cart['price'][$bookID]		= $price ;
+				// $cart['price'][$bookID]		= $price * $quantity;
 			}
 		}
 		Session::set('cart', $cart);

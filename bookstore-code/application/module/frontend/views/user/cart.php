@@ -14,6 +14,14 @@ if(!empty($this->Items)){
 	$total = 0;
 	$i = 0;
 
+	// echo '<pre>$this->Items ';
+	// print_r($this->Items);
+	// echo '</pre>';
+
+	// echo '<pre>$_SESSION[cart] ';
+	// print_r($_SESSION['cart']);
+	// echo '</pre>';
+
 	foreach($this->Items as $value){
 		$i++;
 		$bookID         = $value['id'];
@@ -21,16 +29,21 @@ if(!empty($this->Items)){
         $bookNameURL    = URL::filterURL($value['name']);
         $cateNameURL    = URL::filterURL($value['category_name']);
 
-		$quantity 		= $value['quantity'];
+		// echo '<pre>$value ';
+		// print_r($value);
+		// echo '</pre>';
 
+		$quantity 		= $value['quantity'];
 		$price 			= HTML_Frontend::moneyFormat($value['price'], null);
-		$totalPriceBook = HTML_Frontend::moneyFormat($value['totalprice'], null);
-		$total 			+= $value['totalprice'];
+		$totalOrder 	= $quantity * $value['price'];
+		$totalPriceBook = HTML_Frontend::moneyFormat($totalOrder, null);
+		$total 			+= $totalOrder;
 		$totalFormat 	= HTML_Frontend::moneyFormat($total, null);
+		$inputPriceSale		= Helper::cmsInput('hidden', 'priceSale', "input_price_sale_'.$bookID.'", null, $value['price']);
 
 		$srcPicture     = HTML_Frontend::getSrcPicture($value['picture'], TBL_BOOK);
 
-		$link               = URL::createLink('frontend', 'book', 'index', ['book_id' => $bookID, 'category_id' => $cateID], 
+		$link = URL::createLink('frontend', 'book', 'index', ['book_id' => $bookID, 'category_id' => $cateID], 
 		"$cateNameURL/$bookNameURL-$cateID-$bookID.html");
 
 		$classImage     = '';
@@ -43,7 +56,7 @@ if(!empty($this->Items)){
 		$inputName		= Helper::cmsInput('hidden', 'form[name][]', "input_name_'.$bookID.'", null, $value['name']);
 		$inputPicture	= Helper::cmsInput('hidden', 'form[picture][]', "input_picture_'.$bookID.'", null, $value['picture']);
 
-		$inputs = $inputBookID . $inputPrice . $inputQuantity . $inputName . $inputPicture ;
+		$inputs = $inputBookID . $inputPrice . $inputQuantity . $inputName . $inputPicture . $inputPriceSale;
 
 		$linkDelete		= URL::createLink($module, $controller, 'delete', ['id' => $bookID]);
 		$linkChangeQuantity		= URL::createLink($module, $controller, 'ajaxQuantitiesCart', ['id' => $bookID]);
@@ -75,7 +88,7 @@ if(!empty($this->Items)){
 					</div>
 				</td>
 				
-				<td><h2 class="td-color text-lowercase">'.$totalPriceBook.'</h2></td>
+				<td><h2 class="td-color text-lowercase price-'.$bookID.'" id="price-'.$bookID.'" data-id="'.$bookID.'">'.$totalPriceBook.'</h2></td>
 			</tr>
 			'. $inputs . '
 		';

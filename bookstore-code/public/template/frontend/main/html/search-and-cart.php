@@ -1,11 +1,9 @@
 <?php
     $cart = Session::get('cart');
     $totalItems = 0;
-    $totalPrices = 0;
     $booksOrder = 0;
     if (!empty($cart)) {
         $totalItems = array_sum($cart['quantity']);
-        $totalPrices = array_sum($cart['price']);
         $booksOrder = $totalItems;
     }
 
