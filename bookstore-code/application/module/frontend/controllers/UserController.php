@@ -105,6 +105,16 @@ class UserController extends Controller
 			$cart['quantity'][$bookID]	= $quantity;
 			Session::set('cart', $cart);
 
+			$newCart = array_values($cart);
+			$single= array_reduce($cart, 'array_merge', array());
+
+			$limit = count($single)/2;
+			$total = 0;
+			for ($i=0; $i < $limit; $i++) { 
+				$total += $single[$i] * $single[$i+$limit];
+			}
+		
+
 			echo '<pre>$cart AFTER ';
 			print_r($cart);
 			echo '</pre>';
@@ -112,25 +122,19 @@ class UserController extends Controller
 			// $totalPrice = [];
 			// $totalPrice = 0;
 			// foreach($cart as $key => $value){
-				// foreach($value as $valueTwo){
-				// }
-				// $totalPrice = ;
+			// 	$totalPrice += $cart[$key][$value];
 			// }
 
-			// $new_arr = array_map(function ($e) {
-            //     return $e['quantity'];
-			// }, $cart);
-			
-			// echo '<pre>$new_arr ';
-			// print_r($new_arr);
-			// echo '</pre>';
+			$totalPrice = $cart['price'][$bookID] * $cart['quantity'][$bookID];
+			// $total = $cart['price'] * $cart['quantity'];
 
 			$arrSum = array_sum($cart['quantity']);
 			$resultArr = [
 				'new_cart' => $arrSum,
 				'old_cart' => $oldCart,
-				'price_sale' => $cart['price'][$bookID]
-				// 'total_price' =>
+				'price_sale' => $cart['price'][$bookID],
+				'total_price' => $totalPrice,
+				'total' => $total
 			];
 			echo json_encode($resultArr);
 		}
