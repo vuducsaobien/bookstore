@@ -116,6 +116,8 @@ $(document).ready(function () {
         let url = `index.php?module=${moduleName}&controller=${controllerName}&action=changeState&id=${id}&ordering=${ordering}`;
 
         $.get(url, function (data) {
+            console.log('data ' +data);
+
             if (data.state > 0) {
                 $('.modified-' + data.id).html(data.modified);
                 chkOrdering.attr('href', data.link);
