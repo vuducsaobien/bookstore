@@ -29,16 +29,12 @@ if(!empty($this->Items)){
         $bookNameURL    = URL::filterURL($value['name']);
         $cateNameURL    = URL::filterURL($value['category_name']);
 
-		// echo '<pre>$value ';
-		// print_r($value);
-		// echo '</pre>';
-
 		$quantity 		= $value['quantity'];
 		$price 			= HTML_Frontend::moneyFormat($value['price'], null);
 		$totalOrder 	= $quantity * $value['price'];
-		$totalPriceBook = HTML_Frontend::moneyFormat($totalOrder, null);
+		$totalPriceBook = HTML_Frontend::moneyFormat($totalOrder, 'underline');
 		$total 			+= $totalOrder;
-		$totalFormat 	= HTML_Frontend::moneyFormat($total, null);
+		$totalFormat 	= HTML_Frontend::moneyFormat($total, 'underline');
 		$inputPriceSale		= Helper::cmsInput('hidden', 'priceSale', "input_price_sale_'.$bookID.'", null, $value['price']);
 
 		$srcPicture     = HTML_Frontend::getSrcPicture($value['picture'], TBL_BOOK);
@@ -88,7 +84,7 @@ if(!empty($this->Items)){
 					</div>
 				</td>
 				
-				<td><h2 class="td-color text-lowercase price-'.$bookID.'" id="price-'.$bookID.'" data-id="'.$bookID.'">'.$totalPriceBook.'</h2></td>
+				<td><h2 class="td-color text-lowercase" id="price-'.$bookID.'" >'.$totalPriceBook.'</h2></td>
 			</tr>
 			'. $inputs . '
 		';
@@ -123,7 +119,7 @@ if(!empty($this->Items)){
 							<tr>
 								<td>Tổng :</td>
 								<td>
-									<h2 class="text-lowercase"><?php echo $totalFormat;?></h2>
+									<h2 class="text-lowercase total-price"><?php echo $totalFormat;?></h2>
 								</td>
 							</tr>
 						</tfoot>

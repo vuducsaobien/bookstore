@@ -1,18 +1,10 @@
 <?php
-class UserController extends Controller
+class UserController extends FrontendController
 {
 
 	public function __construct($arrParams)
 	{
 		parent::__construct($arrParams);
-		$this->_templateObj->setFolderTemplate('frontend/main/');
-		$this->_templateObj->setFileTemplate('index.php');
-		$this->_templateObj->setFileConfig('template.ini');
-		$this->_templateObj->load();
-
-		$this->_moduleName = $this->_arrParam['module'];
-		$this->_controllerName = $this->_arrParam['controller'];
-		$this->_actionName = $this->_arrParam['action'];
 	}
 
 	public function indexAction(){
@@ -94,10 +86,7 @@ class UserController extends Controller
 		$cart	= Session::get('cart');
 		$bookID = $this->_arrParam['id'];
 		$quantity = $this->_arrParam['quantity'];
-
-		// echo '<pre>$cart BEFORE ';
-		// print_r($cart);
-		// echo '</pre>';
+		if ($quantity <= 1) $quantity = 1;
 
 		$oldCart = array_sum($cart['quantity']);
 
@@ -105,35 +94,22 @@ class UserController extends Controller
 			$cart['quantity'][$bookID]	= $quantity;
 			Session::set('cart', $cart);
 
-			$newCart = array_values($cart);
-			$single= array_reduce($cart, 'array_merge', array());
+			$arrSum = array_sum($cart['quantity']);
 
+			$single= array_reduce($cart, 'array_merge', [] );
+			$i = 0;
 			$limit = count($single)/2;
 			$total = 0;
-			for ($i=0; $i < $limit; $i++) { 
-				$total += $single[$i] * $single[$i+$limit];
+			foreach ($single as $key => $value) {
+				if ($i == $limit) break;
+				$total += $single[$key] * $single[$key+$limit];
+				$i++;
 			}
-		
-
-			echo '<pre>$cart AFTER ';
-			print_r($cart);
-			echo '</pre>';
-
-			// $totalPrice = [];
-			// $totalPrice = 0;
-			// foreach($cart as $key => $value){
-			// 	$totalPrice += $cart[$key][$value];
-			// }
-
-			$totalPrice = $cart['price'][$bookID] * $cart['quantity'][$bookID];
-			// $total = $cart['price'] * $cart['quantity'];
-
-			$arrSum = array_sum($cart['quantity']);
+			
 			$resultArr = [
 				'new_cart' => $arrSum,
 				'old_cart' => $oldCart,
 				'price_sale' => $cart['price'][$bookID],
-				'total_price' => $totalPrice,
 				'total' => $total
 			];
 			echo json_encode($resultArr);
@@ -148,31 +124,18 @@ class UserController extends Controller
 		$bookInfo = $this->_model->infoItems($this->_arrParam, ['task' => 'order-book']);
 		$price = HTML_Frontend::moneyFormat(null, 'price_order', $bookInfo['price'], $bookInfo['sale_off']);
 
-		// 	echo '<pre>$bookInfo ';
-		// print_r($bookInfo);
-		// echo '</pre>';
-		// die('<h3>Die is Called</h3>');
-
-		// Shortcut
-		// if(empty($cart)){
 		if(!$cart){
 			$cart['quantity'][$bookID]	= $quantity;
-			$cart['price'][$bookID]		= $price ;
-			// $cart['total_price'][$bookID] = $price * $cart['quantity'][$bookID];
-			// $cart['price'][$bookID]		= $price * $cart['quantity'][$bookID];
 
 		}else{
 			if(key_exists($bookID, $cart['quantity'])){
 				$cart['quantity'][$bookID]	+= $quantity;
-				$cart['price'][$bookID]		= $price ;
-				// $cart['price'][$bookID]		= $price * $cart['quantity'][$bookID];
-
 			}else{
 				$cart['quantity'][$bookID]	= $quantity;
-				$cart['price'][$bookID]		= $price ;
-				// $cart['price'][$bookID]		= $price * $quantity;
 			}
 		}
+		$cart['price'][$bookID]		= $price ;
+
 		Session::set('cart', $cart);
 		echo json_encode(array_sum($cart['quantity']));
 	}

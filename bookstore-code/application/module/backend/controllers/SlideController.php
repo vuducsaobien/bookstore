@@ -12,7 +12,7 @@ class SlideController extends BackendController
 		$this->_view->_title 		= ucfirst($this->_controllerName) . ' Manager :: List';
 
 		// Pagination
-		echo $totalItems					= $this->_model->countItems($this->_arrParam);
+		$totalItems					= $this->_model->countItems($this->_arrParam);
 		$configPagination = ['totalItemsPerPage' => ITEM_PER_PAGE, 'pageRange' => PAGE_RANGE];
 		$this->setPagination($configPagination);
 		$this->_view->pagination	= new Pagination($totalItems, $this->_pagination);

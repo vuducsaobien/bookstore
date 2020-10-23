@@ -89,44 +89,39 @@ $(document).ready(function () {
     $('.input-change-quantities').change(function () {
         let inputChange = $(this);
         let quantity = $(this).val();
+        if(quantity <= 1 ) quantity=1;
         let id = $(this).data('id');
         let url = `index.php?module=${moduleName}&controller=${controllerName}&action=ajaxquantityCart&id=${id}&quantity=${quantity}`;
 
-        $.get(url, function (data) {
-            console.log('data '+data)
-        });
-    
-
-        // $.getJSON(url, function (data) {            
-        //     let quantityChange = data.new_cart - data.old_cart;
-        //     // $('#input_price_sale_' +data.id).text();
-        //     // let price_sale = $('#input_price_sale_' +data.id);
-        //     let total_sale_book = data.price_sale * quantity;
-        //     // let total_sale_book = data.price_sale * quantity;
-
-        //     let sale_book = moneyFormat(total_sale_book);
-        //     // console.log('price_sale ' +data.price_sale);
-        //     // console.log('input_quantity ' +quantity);
-        //     console.log('total_sale_book ' +total_sale_book);
-        //     // console.log('sale_book ' +sale_book);
-
-        //     // $('#price-' +data.id).text(50000);
-        //     $('h2.price-' +data.id).html(50000);
-        //     // let op = $('#price-' +data.id).text(50000);
-        //     // $('#price-book-' +data.id).html(total_sale_book);
-        //     // console.log('op ' +op);
-
-        //     $('span.badge-warning').html(data.new_cart);
-        //     $('.modified-' + data.id).html(data.modified);
-        //     var addCart = $('li.mobile-cart div a');
-        //     if (quantityChange > '0') {
-        //         showNotify(addCart, 'success-order', quantityChange);
-        //     } else {
-        //         showNotify(addCart, 'reduce-order', -quantityChange);
-        //     }
-        //     showNotify(inputChange, 'success-update');
-
+        // $.get(url, function (data) {
+        //     console.log('data '+data)
         // });
+
+        $.getJSON(url, function (data) {            
+            let quantityChange = data.new_cart - data.old_cart;
+            let price_book = data.price_sale * quantity;
+            let sale_book = moneyFormat(price_book);
+            let total_price = moneyFormat(data.total);
+
+            console.log('sale_book ' +sale_book);
+            console.log('price_sale ' +data.price_sale);
+            console.log('input_quantity ' +quantity);
+            console.log('total ' +data.total);
+
+            $('#price-' +id).html(sale_book);
+            $('h2.total-price').html(total_price);
+
+            $('span.badge-warning').html(data.new_cart);
+            $('.modified-' + data.id).html(data.modified);
+            var addCart = $('li.mobile-cart div a');
+            if (quantityChange > '0') {
+                showNotify(addCart, 'success-order', quantityChange);
+            } else {
+                showNotify(addCart, 'reduce-order', -quantityChange);
+            }
+            showNotify(inputChange, 'success-update');
+
+        });
 
 
     });

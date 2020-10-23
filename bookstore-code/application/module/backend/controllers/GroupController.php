@@ -28,7 +28,6 @@ class GroupController extends BackendController
 		$totalItemsPerPage = $this->_view->arrParam['pagination']['totalItemsPerPage'];
 		HTML_Frontend::pageError($page, $totalItems, $totalItemsPerPage, $this->_moduleName, $this->_controllerName, $this->_actionName);
 		
-		// SHORTCUT
 		$this->_view->render("{$this->_controllerName}/index");
 	}
 
@@ -62,12 +61,6 @@ class GroupController extends BackendController
 		$this->_view->arrParam = $this->_arrParam;
 		$this->_view->render("{$this->_controllerName}/form");
 	}
-
-	public function changeStateAction()
-    {
-		$result = $this->_model->ajaxChangeState($this->_arrParam);
-		echo json_encode($result);
-    }
 
 		
 

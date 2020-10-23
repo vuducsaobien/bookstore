@@ -85,6 +85,7 @@ class UserModel extends Model
 	}
 
 	public function listItems($arrParam, $options = null){
+		
 		if($options['task'] == 'books-in-cart'){
 			$cart	= Session::get('cart');
 			$result	= [];
@@ -93,32 +94,20 @@ class UserModel extends Model
 				foreach($cart['quantity'] as $key => $value) $ids .= "'$key', ";
 				$ids	.= " '0')" ;
 
-				$query[] = "SELECT `b`.`id`, `b`.`name`, `b`.`picture`, `b`.`sale_off`, `b`.`special`, `b`.`ordering`, `b`.`price`, `b`.`category_id`, `c`.`name` AS `category_name` ";
+				$query[] 	= "SELECT `b`.`id`, `b`.`name`, `b`.`picture`, `b`.`sale_off`, `b`.`special`, `b`.`ordering`, `b`.`price`, `b`.`category_id`, `c`.`name` AS `category_name` ";
 				$query[]	= "FROM `".TBL_BOOK."` AS `b` LEFT JOIN `".TBL_CATEGORY."` AS `c` ON `b`.`category_id` = `c`.`id`";
 				$query[]	= "WHERE `b`.`status`  = 'active' AND `b`.`id` IN $ids";
-				$query[]	= "ORDER BY `b`.`id` ASC";
-	
+				$query[]	= "ORDER BY `b`.`price` ASC";
 		
 				$query		= implode(" ", $query);
 				$result		= $this->fetchAll($query);
-
-				// echo '<pre>$arrParam ';
-				// print_r($arrParam);
-				// echo '</pre>';
-
-				// echo '<pre>$result ';
-				// print_r($result);
-				// echo '</pre>';
-				// die('<h3>Die is Called</h3>');
 
 				foreach($result as $key => $value){
 					$result[$key]['quantity']	= $cart['quantity'][$value['id']];
 					$result[$key]['price'] = HTML_Frontend::moneyFormat(null, 'price_order', $result[$key]['price'], $result[$key]['sale_off']);
 				}
 
-
 			}
-			return $result;
 		}
 		
 		if($options['task'] == 'history-cart'){
@@ -130,10 +119,10 @@ class UserModel extends Model
 			$query[]	= "ORDER BY `date` ASC";
 		
 			$query		= implode(" ", $query);
-			$result		= $this->fetchAll($query);
-				
-			return $result;
+			$result		= $this->fetchAll($query);			
 		}
+
+		return $result;
 	}
 
 	public function saveItems($arrParam, $options = null){

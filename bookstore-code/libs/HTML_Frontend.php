@@ -226,7 +226,10 @@ class HTML_Frontend
     {
         if($options==null) {
             $result = number_format($value, 0, ',', '.') .' '. MONEY_VALUE;
-            
+
+        }elseif($options=='underline'){
+            $result = number_format($value, 0, ',', '.') .' <u>'. MONEY_VALUE.'<u>';
+
         }elseif($options=='sale_off'){
             $result = $value .'%';
 

@@ -33,14 +33,6 @@
             $arrQuantity	= json_decode($item['quantities']);
             $arrPicture		= json_decode($item['pictures']);
 
-            // echo '<pre>$arrPrice ';
-            // print_r($arrPrice);
-            // echo '</pre>';
-
-            // echo '<pre>$arrQuantity ';
-            // print_r($arrQuantity);
-            // echo '</pre>';
-
             $created        = HTML::showItemHistory($item['username'], $item['date']);
             $linkView       = URL::createLink($module, $controller, 'view', ['id' => $cartID]);
             $checkbox       = HTML::showItemCheckbox($cartID);
@@ -71,9 +63,6 @@
             $totalPrice = 0;
             foreach($new_arr as $key => $lastName){
                 $spanNumber = $arrQuantity[$key];
-                echo '<pre>$spanNumber ';
-                print_r($spanNumber);
-                echo '</pre>';
                 $span = '<span class="badge badge-pill badge-primary">'.$spanNumber.'</span>';
                 $prices = $arrPrice[$key];
                 $pricesProduct = $prices * $spanNumber;

@@ -1,17 +1,9 @@
 <?php
-class CategoryController extends Controller
+class CategoryController extends FrontendController
 {
 	public function __construct($arrParams)
 	{
 		parent::__construct($arrParams);
-		$this->_templateObj->setFolderTemplate('frontend/main/');
-		$this->_templateObj->setFileTemplate('index.php');
-		$this->_templateObj->setFileConfig('template.ini');
-		$this->_templateObj->load();
-
-		$this->_moduleName = $this->_arrParam['module'];
-		$this->_controllerName = $this->_arrParam['controller'];
-		$this->_actionName = $this->_arrParam['action'];
 	}
 
 	// ACTION: LIST GROUP
@@ -22,7 +14,7 @@ class CategoryController extends Controller
 		// Pagination
 		$totalItems	 = $this->_model->countItems($this->_arrParam);
 		$this->_view->totalItems['totalItems'] = $totalItems;
-		$configPagination = ['totalItemsPerPage' => 15, 'pageRange' => 3];
+		$configPagination = ['totalItemsPerPage' => 15, 'pageRange' => PAGE_RANGE];
 		$this->setPagination($configPagination);
 		$this->_view->pagination	= new Pagination($totalItems, $this->_pagination);
 
