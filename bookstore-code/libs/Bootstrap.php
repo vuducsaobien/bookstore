@@ -13,7 +13,6 @@ class Bootstrap{
 			$this->callMethod();
 		}else{
 			// URL::redirect('frontend', 'index', 'notice', ['type' => 'not-found'], 'not-found.html');
-			
 			if($this->_params['module'] == 'backend'){
 				URL::redirect('backend', 'index', 'notice', ['type' => 'not-found'] );
 			}else{
@@ -64,6 +63,8 @@ class Bootstrap{
 			}
 
 		}else{
+			// die;
+			// echo '<h3>Die is Called</h3>';
 			URL::redirect('frontend', 'index', 'notice', ['type' => 'not-found'] );
 		}
 

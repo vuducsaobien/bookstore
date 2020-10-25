@@ -8,6 +8,7 @@
     <link rel="icon"          href="<?php echo $imageURL;?>/favicon.png" type="image/x-icon">
     <link rel="shortcut icon" href="<?php echo $imageURL;?>/favicon.png" type="image/x-icon">
     <link rel="stylesheet"    href="https://fonts.googleapis.com/css?family=Roboto:300,400,700,900">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;700;900&display=swap" rel="stylesheet">
     <?= $this->_cssFiles;?>
 </head>
 

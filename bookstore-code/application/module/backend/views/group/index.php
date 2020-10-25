@@ -1,4 +1,4 @@
-<?php 
+<?php
     $module         = $this->arrParam['module'];
     // Select Box
     $arrAction = [

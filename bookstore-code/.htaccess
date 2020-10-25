@@ -36,8 +36,8 @@ RewriteRule		index.html 			    index.php?module=frontend&controller=index&action
 RewriteRule		category.html 		    index.php?module=frontend&controller=category&action=index [QSA]
 RewriteRule		register.html 		    index.php?module=frontend&controller=index&action=register
 RewriteRule		login.html 			    index.php?module=frontend&controller=index&action=login
-#RewriteRule		cart.html 			    index.php?module=frontend&controller=user&action=cart
-RewriteRule		cart.html(.*) 			    index.php?module=frontend&controller=user&action=cart [QSA]
+RewriteRule		cart.html 			    index.php?module=frontend&controller=user&action=cart
+#RewriteRule		cart.html(.*) 			    index.php?module=frontend&controller=user&action=cart [QSA]
 RewriteRule		my-account.html 	    index.php?module=frontend&controller=user&action=index
 RewriteRule		change-password.html 	index.php?module=frontend&controller=user&action=reset_password
 RewriteRule		history.html 		    index.php?module=frontend&controller=user&action=history

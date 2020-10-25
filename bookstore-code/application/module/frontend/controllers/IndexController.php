@@ -21,20 +21,17 @@ class IndexController extends FrontendController{
 		$title = 'Đăng Nhập | BookStore';
 		$userInfo	= Session::get('user');
 
-		// if( $userInfo['login'] == true && time() <= $userInfo['time'] + TIME_LOGIN ){
 		if( $userInfo['login'] == true && $userInfo['time'] + TIME_LOGIN >= time()){
 			Session::delete('cart');
-			URL::redirect('frontend', 'user', 'index');
+			URL::redirect('frontend', 'user', 'index', 'my-account.html');
 		}
-
 
 		if ($this->_arrParam['form']['token'] > 0) {
 
 			$this->_validate->validate($this->_model);
 
 			if ( $this->_validate->isValid() ) {
-				// Click Cart (chưa Login) => UserModel; rồi => IndexModel
-				$infoUser		= $this->_model->infoItems($this->_arrParam); // Notice UserModel OR IndexModel Video 11.Login Public P2 11:00 infoItems
+				$infoUser		= $this->_model->infoItems($this->_arrParam); 
 				$arraySession	= array(
 					'login'		=> true,
 					'info'		=> $infoUser,
@@ -58,7 +55,6 @@ class IndexController extends FrontendController{
 		$arrForm = $this->_arrParam['form'];
 
 		if( !empty($arrForm['submit']) ){
-
 			$this->_validate->validateForgot($this->_model);
 
 			if ( $this->_validate->isValid() ) {
