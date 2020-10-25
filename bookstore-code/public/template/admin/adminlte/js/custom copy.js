@@ -2,6 +2,41 @@ $(document).ready(function () {
     var searchParams = new URLSearchParams(window.location.search);
     var moduleName = searchParams.get('module');
     var controllerName = searchParams.get('controller');
+    // /*
+    // Prevent delete button
+    $('.btn-delete-item').click(function () {
+
+        // $('.btn-delete-item').click(function (e) {
+        // var countCheckedInput = $('[name="checkbox[]"]:checked').length;
+
+        // if(countCheckedInput<0){
+        // 	alert('Vui Lòng Chọn Phần Tử Muốn Xóa');
+        // }
+        // e.preventDefault();
+
+        // if (confirm
+        //     ("Bạn có muốn xóa phần tử này không ??")
+        // ) {
+        //    link = $(this).attr('href');
+        //    window.location.assign(link);
+        // }
+
+        // Swal.fire(confirmObj('Bạn chắc chắn muốn xóa dòng dữ liệu này?', 'error', 'Xóa')).then(
+        // Swal.fire(confirm('Bạn chắc chắn muốn xóa dòng dữ liệu này?', 'error', 'Xóa')).then(
+
+        // (result) => {
+        //     if (result.value) {
+        //         let moduleName = getUrlParam('module');
+        //         let controllerName = getUrlParam('controller');
+        //             // window.location.href = `index.php?module=${moduleName}&controller=${controllerName}&action=delete&id=${id}`;
+        //         }
+        //     }
+        // );
+
+
+    });
+
+    // */
 
     // AJAX FILTER GROUP ACP SELECT BOX CHECK
     $('#filter-bar select[name=filter_group_acp]').change(function () {
@@ -133,11 +168,13 @@ $(document).ready(function () {
     // Bulk Acion Multi Acion
     $('#bulk-apply').click(function () {
         var action = $('#bulk-action').val();
+        // var link = `index.php?module=${moduleName}&controller=${controllerName}&action=`;
         var checkbox = $('#form-table input[name="checkbox[]"]:checked');
         let lstID = [];
         checkbox.each(function () {
             lstID.push($(this).val());
         });    
+        // console.log('link ' +link);
 
         if(checkbox.length > 0){
             switch (action) {
@@ -145,7 +182,42 @@ $(document).ready(function () {
                 case 'multi-inactive': showConfirmBulkAction(moduleName, controllerName, 'multi_inactive'); break;
                 case 'multi-special': showConfirmBulkAction(moduleName, controllerName, 'multi_special'); break;
                 case 'multi-unspecial': showConfirmBulkAction(moduleName, controllerName, 'multi_unspecial'); break;
-                case 'multi-delete': showConfirmBulkAction(moduleName, controllerName, 'multi_delete', 'delete'); break;
+                
+                case 'multi-delete':
+                    switch (controllerName) {
+                        case 'user':    case 'book':    case 'slide':
+                            showConfirmBulkAction(moduleName, controllerName, 'multi_delete', 'delete'); 
+                        break;
+
+                        default:
+                            switch (controllerName) {
+                                case 'group':    
+                                    message = `Các User thuộc các Group này cũng sẽ được xóa theo.<br/>`;
+                                    break;
+                                case 'category':
+                                    message = `Các Sách thuộc các Danh mục này cũng sẽ được xóa theo.<br/>`;
+                                    break;
+                            }
+
+                            // showConfirmBulkAction(moduleName, controllerName, 'multi_delete', 'delete');
+                            // message += 'Nhập mật khẩu để tiếp tục!';
+                            // console.log(message);
+
+                            // let obj = confirmObj(message, 'error', 'Xóa');
+                            // obj = showPreConfirmDelete(obj);
+
+                            // Swal.fire(obj).then((result) => {
+                            //     if (result.value) {
+                            //         $('#form-table').attr('action',
+                            //             `index.php?module=${moduleName}&controller=${controllerName}&action=multi_delete`
+                            //         );
+                            //         $('#form-table').submit();
+                            //     }
+                            // });
+    
+                        break;
+                    };
+                break;
                 default:    showToast('warning', 'bulk-action-not-selected-action');    break;
             }
 
@@ -207,6 +279,7 @@ function showPreConfirmDelete(obj) {
     console.log ('obj '+obj);
 }
 
+
 function deleteItems(id) {
     let module = getUrlParam('module');
     let controller = getUrlParam('controller');
@@ -215,8 +288,6 @@ function deleteItems(id) {
         case 'user':
         case 'book':
         case 'slide':
-        case 'group':
-        case 'category':
             Swal.fire(confirmObj('Bạn chắc chắn muốn xóa dòng dữ liệu này?', 'error', 'Xóa')).then(
                 (result) => {
                     if (result.value) {
@@ -224,7 +295,9 @@ function deleteItems(id) {
                     }
                 }
             );
-        default:    console.log('sss'); break;
+        default:
+            console.log('sss');
+            break;
     }
 };
 
@@ -250,6 +323,8 @@ function showConfirmBulkAction(module, controller, action, type = 'update', para
     });
     
 }
+
+
 
 function getUrlParam(key) {
     let searchParams = new URLSearchParams(window.location.search);

@@ -75,7 +75,7 @@ if ($this->sendMail == true) {
         $mail->Host       = 'smtp.gmail.com';                        
         $mail->SMTPAuth   = true;                                  
         $mail->Username   = 'vuducsaobien95@gmail.com';             
-        $mail->Password   = 'eamebfnacckryzyk';                     
+        $mail->Password   = '4d87a76b2859ae053fe49659944a1734';                     
         // $mail->Port       = 465;     
         $mail->Port       = 587;
         // $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;   
