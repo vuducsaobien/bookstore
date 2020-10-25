@@ -23,7 +23,7 @@ class IndexController extends FrontendController{
 
 		if( $userInfo['login'] == true && $userInfo['time'] + TIME_LOGIN >= time()){
 			Session::delete('cart');
-			URL::redirect('frontend', 'user', 'index', 'my-account.html');
+			URL::redirect('frontend', 'user', 'index', null,'my-account.html');
 		}
 
 		if ($this->_arrParam['form']['token'] > 0) {

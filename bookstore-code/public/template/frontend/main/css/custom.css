@@ -1,9 +1,7 @@
-
 body {
-    font-family:  'Nunito', 'Helvetica Neue', 'Source Sans Pro', -apple-system, BlinkMacSystemFont,
+    font-family: 'Helvetica Neue', Roboto, 'Source Sans Pro', -apple-system, BlinkMacSystemFont,
         'Segoe UI', Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
 }
-
 .my-text-primary {
     color: #5fcbc4;
 }

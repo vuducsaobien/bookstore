@@ -4,13 +4,13 @@ $controller = $this->arrParam['controller'];
 $action     = $this->arrParam['action'];
 $dataForm   = $this->arrParam['form']; 
 // Input
-$inputPassword = Helper::cmsInput('text', 'form[password]', 'form[password]', 'form-control', $dataForm['password'], null, null, null, null, '123');
+$inputPassword = Helper::cmsInput('password', 'form[password]', 'form[password]', 'form-control', $dataForm['password'], null, null, null, null, '123');
 $inputEmail    = Helper::cmsInput('text', 'form[email]', 'form[email]', 'form-control', $dataForm['email'], null, null, null, null, 'vuducsaobien95@gmail.com');
 
 $inputToken    = Helper::cmsInput('hidden', 'form[token]', 'form[submit]', null,time()); 
 $btnSubmit   = Helper::cmsButton('button', 'Đăng nhập', 'form[submit]', 'submit', 'btn btn-info', null, 'Đăng nhập');
 
-$linkForgotPass = URL::createLink('frontend', 'index', 'forgot');
+$linkForgotPass = URL::createLink('frontend', 'index', 'forgot', null, 'forgot.html');
 $btnForgot      = Helper::cmsButton('backend', 'Quên Mật Khẩu', 'form[submit]', null, 'btn btn-info btn-warning ml-3', $linkForgotPass);
 
 // Row
