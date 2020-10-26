@@ -32,19 +32,16 @@
 
     // Select Box
     $arrStatus   = [
-        ['name'  => '- Select Status -', 'id' => 'default'],
-        ['name'  => 'Active', 'id' => 'active'],
-        ['name'  => 'Inactive', 'id' => 'inactive']
+        ['name'  => 'Inactive', 'id' => 'inactive'],
+        ['name'  => 'Active', 'id' => 'active']
     ];
     $arrGroupACP = [
-        ['name'  => '- Select Group ACP -', 'id' => 'default'],
-        ['name'  => 'Yes', 'id' => '1'],
-        ['name'  => 'No', 'id' => '0']
+        ['name'  => 'No', 'id' => '0'],
+        ['name'  => 'Yes', 'id' => '1']
     ];
     $arrSpecial   = [
-        ['name'  => "- Special $controllerName ? -",  'id' => 'default'],
-        ['name'  => 'Yes',                   'id' => '1'],
-        ['name'  => 'No',                 'id' => '0']
+        ['name'  => 'No',                 'id' => '0'],
+        ['name'  => 'Yes',                   'id' => '1']
     ];
 
     $slbSpecial         = HTML::createSelectBox($arrSpecial, 'form[special]', 'custom-select custom-select-sm', 'width: unset', null, null, $dataForm['special']);

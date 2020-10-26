@@ -48,12 +48,15 @@ $arrDashboard = ['parent' => ['name' => 'Dashboard', 'icon' => 'tachometer-alt',
 $dashboard  = HTML::createSidebar($controller,$action,$arrDashboard);
 
 //Group
-$arrGroup = ['parent' => ['name' => 'Group', 'icon' => 'users','link' => '#'],
-             'child'  => [
-                            ['name' =>'List','icon' => 'list-ul','link' => $linkGroupList],
-                            ['name' => 'Form','icon' => 'edit','link' => $linkGroupForm]
-                        ]
-            ];
+// $arrGroup = ['parent' => ['name' => 'Group', 'icon' => 'users','link' => '#'],
+//              'child'  => [
+//                             ['name' =>'List','icon' => 'list-ul','link' => $linkGroupList],
+//                             ['name' => 'Form','icon' => 'edit','link' => $linkGroupForm]
+//                         ]
+//             ];
+$arrGroup = ['parent' => ['name' => 'Group', 'icon' => 'users','link' => $linkGroupList]
+];
+
 $group      = HTML::createSidebar($controller,$action,$arrGroup);
 
 //Category

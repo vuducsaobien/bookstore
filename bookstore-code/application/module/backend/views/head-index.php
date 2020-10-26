@@ -79,9 +79,10 @@
         $btnClear  = Helper::cmsButton('button', 'Clear', 'btn-clear-search', 'button', 'btn btn-sm btn-danger');
 
         // Input
-        $inputModule     = Helper::cmsInput('hidden', 'module', null, null, $module, null, null);
-        $inputController = Helper::cmsInput('hidden', 'controller', null, null, $controller, null, null);
-        $inputAction     = Helper::cmsInput('hidden', 'action', null, null, $action, null, null);
+        $inputModule     = Helper::cmsInput('hidden', 'module', null, null, $module);
+        $inputController = Helper::cmsInput('hidden', 'controller', null, null, $controller);
+        $inputAction     = Helper::cmsInput('hidden', 'action', null, null, $action);
+        $inputHidden     = $inputModule . $inputController . $inputAction;
         $inputSearch     = Helper::cmsInput('text', 'search', null, 'form-control form-control-sm', $arrParam['search'], null, 'min-width: 300px');
 
         // Search Status

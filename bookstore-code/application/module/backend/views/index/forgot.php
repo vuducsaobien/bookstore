@@ -58,7 +58,7 @@ if( !empty($email) && !empty($arrForm['new-password']) && $emailExist=='1'){
 
     $mail->Username   = 'vuducsaobien95@gmail.com';                    
     $mail->Password   = '4d87a76b2859ae053fe49659944a1734';                    
-    $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;         
+    $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
     $mail->Port       = 587;                                  
 
     //Recipients
